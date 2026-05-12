@@ -72,7 +72,7 @@ body.present-mode .show-in-present{display:flex!important}
 .stat-sub{font-size:11px;color:var(--text3);margin-top:1px}
 
 /* PANELS */
-.panel{display:none}.panel.active{display:block}
+.panel{display:none!important}.panel.active{display:block!important}
 
 /* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:0.5px solid var(--border2);border-radius:var(--radius);background:var(--bg);color:var(--text);font-size:13px;cursor:pointer;transition:background .12s;white-space:nowrap;font-family:inherit}
@@ -247,8 +247,9 @@ tr:hover td{background:var(--bg2)}
 .insight strong{font-weight:600}
 
 /* PRESENT MODE BANNER */
-.present-banner{display:none;background:var(--amber-fill);border:0.5px solid var(--amber-text);border-radius:var(--radius);padding:8px 14px;margin-bottom:1rem;font-size:13px;color:var(--amber-text);align-items:center;gap:8px}
-body.present-mode .present-banner{display:flex!important}
+.present-banner{display:none;background:var(--text);color:var(--bg);border-radius:var(--radius);padding:10px 16px;margin-bottom:1.25rem;font-size:13px;font-weight:500;align-items:center;gap:10px;position:sticky;top:0;z-index:10}
+body.present-mode .present-banner{display:flex}
+body.present-mode .sidebar-footer .present-toggle{background:var(--text);color:var(--bg);border-color:var(--text)}
 </style>
 </head>
 <body>
@@ -257,13 +258,13 @@ body.present-mode .present-banner{display:flex!important}
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-brand">
-    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:8px;margin-bottom:2px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px">
       <div class="brand-mark">BDD</div>
       <div>
         <div class="brand-name">Britt Dupree Daniels</div>
         <div class="brand-sub">Wellness Architect · Washington D.C.</div>
       </div>
-    </a>
+    </div>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section">Daily</div>
@@ -291,6 +292,9 @@ body.present-mode .present-banner{display:flex!important}
     <div class="nav-section">Intelligence</div>
     <button class="nav-item" onclick="showPanel('revenue')" id="nav-revenue">
       <i class="ti ti-chart-bar"></i> Revenue &amp; P&amp;L
+    </button>
+    <button class="nav-item" onclick="showPanel('brain')" id="nav-brain">
+      <i class="ti ti-brain"></i> Company Brain
     </button>
     <button class="nav-item" onclick="showPanel('media')" id="nav-media">
       <i class="ti ti-microphone"></i> Media &amp; Speaking
@@ -344,7 +348,7 @@ body.present-mode .present-banner{display:flex!important}
 </div>
 
 <!-- PRESENT MODE BANNER -->
-<div class="present-banner"><i class="ti ti-presentation" style="font-size:16px"></i> Present mode active — sensitive items hidden</div>
+<div class="present-banner"><i class="ti ti-presentation" style="font-size:16px"></i> Present mode — showing Britt Dupree Daniels' operating system <button onclick="togglePresent()" style="margin-left:auto;background:rgba(255,255,255,.15);border:0.5px solid rgba(255,255,255,.3);color:inherit;border-radius:var(--radius);padding:4px 12px;font-size:12px;cursor:pointer;font-family:inherit">Exit</button></div>
 
 <!-- ═══════════════════════════════ MORNING BRIEFING ═══════════════════════════════ -->
 <div id="panel-briefing" class="panel active">
@@ -426,10 +430,10 @@ body.present-mode .present-banner{display:flex!important}
     </div>
   </div>
   <div class="subtab-bar">
-    <button class="subtab active" onclick="switchSub('work','pipeline')">Pipeline</button>
-    <button class="subtab" onclick="switchSub('work','tasks')">Tasks</button>
-    <button class="subtab" onclick="switchSub('work','renewal')">Renewal Radar</button>
-    <button class="subtab" onclick="switchSub('work','proposals')">Proposals</button>
+    <button class="subtab active" data-target="sub-work-pipeline" onclick="switchSub('work','pipeline')">Pipeline</button>
+    <button class="subtab" data-target="sub-work-tasks" onclick="switchSub('work','tasks')">Tasks</button>
+    <button class="subtab" data-target="sub-work-renewal" onclick="switchSub('work','renewal')">Renewal Radar</button>
+    <button class="subtab" data-target="sub-work-proposals" onclick="switchSub('work','proposals')">Proposals</button>
   </div>
 
   <!-- Pipeline subpanel -->
@@ -540,9 +544,9 @@ body.present-mode .present-banner{display:flex!important}
     </div>
   </div>
   <div class="subtab-bar">
-    <button class="subtab active" onclick="switchSub('people','contacts')">Contacts</button>
-    <button class="subtab" onclick="switchSub('people','orgs')">Organizations</button>
-    <button class="subtab" onclick="switchSub('people','network');setTimeout(initGraph,80)">Network</button>
+    <button class="subtab active" data-target="sub-people-contacts" onclick="switchSub('people','contacts')">Contacts</button>
+    <button class="subtab" data-target="sub-people-orgs" onclick="switchSub('people','orgs')">Organizations</button>
+    <button class="subtab" data-target="sub-people-network" onclick="switchSub('people','network');setTimeout(initGraph,80)">Network</button>
   </div>
 
   <!-- Contacts -->
@@ -611,8 +615,8 @@ body.present-mode .present-banner{display:flex!important}
     </div>
   </div>
   <div class="subtab-bar">
-    <button class="subtab active" onclick="switchSub('delivery','contracts')">Active Contracts</button>
-    <button class="subtab" onclick="switchSub('delivery','classes')">Classes &amp; Sessions</button>
+    <button class="subtab active" data-target="sub-delivery-contracts" onclick="switchSub('delivery','contracts')">Active Contracts</button>
+    <button class="subtab" data-target="sub-delivery-classes" onclick="switchSub('delivery','classes')">Classes &amp; Sessions</button>
   </div>
 
   <!-- Contracts -->
@@ -731,11 +735,11 @@ body.present-mode .present-banner{display:flex!important}
     </div>
   </div>
   <div class="subtab-bar">
-    <button class="subtab active" onclick="switchSub('community','events')">Trap Yoga Events</button>
-    <button class="subtab" onclick="switchSub('community','attendees')">Attendee Database</button>
-    <button class="subtab" onclick="switchSub('community','ambassadors')">Ambassadors</button>
-    <button class="subtab" onclick="switchSub('community','waitlist')">Waitlist &amp; Demand</button>
-    <button class="subtab" onclick="switchSub('community','campaigns')">Email Campaigns</button>
+    <button class="subtab active" data-target="sub-community-events" onclick="switchSub('community','events')">Trap Yoga Events</button>
+    <button class="subtab" data-target="sub-community-roster" onclick="switchSub('community','roster')">Attendee Roster</button>
+    <button class="subtab" data-target="sub-community-ambassadors" onclick="switchSub('community','ambassadors')">Ambassadors</button>
+    <button class="subtab" data-target="sub-community-waitlist" onclick="switchSub('community','waitlist')">Waitlist &amp; Demand</button>
+    <button class="subtab" data-target="sub-community-campaigns" onclick="switchSub('community','campaigns')">Email Campaigns</button>
   </div>
 
   <div id="sub-community-events" class="subpanel active">
@@ -744,6 +748,33 @@ body.present-mode .present-banner{display:flex!important}
       <button class="btn primary hide-in-present" style="margin-left:auto" onclick="alert('Add event — coming in next build')"><i class="ti ti-plus"></i> Add event</button>
     </div>
     <div id="events-list"></div>
+  </div>
+
+  <!-- ATTENDEE ROSTER -->
+  <div id="sub-community-roster" class="subpanel">
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:1.25rem">
+      <div class="stat"><div class="stat-label">Total unique attendees</div><div class="stat-val">312</div><div class="stat-sub">across all events</div></div>
+      <div class="stat" style="background:var(--green-fill)"><div class="stat-label" style="color:var(--green-text)">Emails captured</div><div class="stat-val" style="color:var(--green-text)">287</div><div class="stat-sub" style="color:var(--green-text)">92% capture rate</div></div>
+      <div class="stat"><div class="stat-label">Repeat attendees</div><div class="stat-val">118</div><div class="stat-sub">38% retention</div></div>
+      <div class="stat"><div class="stat-label">Avg events / person</div><div class="stat-val">2.4</div></div>
+      <div class="stat" style="background:var(--blue-fill)"><div class="stat-label" style="color:var(--blue-text)">Ambassador potential</div><div class="stat-val" style="color:var(--blue-text)">14</div><div class="stat-sub" style="color:var(--blue-text)">3+ events + engaged</div></div>
+    </div>
+    <div class="toolbar">
+      <input id="search-roster" type="text" placeholder="Search name, tag, or email..." oninput="renderRoster()">
+      <select id="filter-roster-tag" onchange="renderRoster()">
+        <option value="">All attendees</option>
+        <option value="superfan">Superfans</option>
+        <option value="repeat">Repeat attendees</option>
+        <option value="first-timer">First-timers</option>
+        <option value="ambassador">Ambassadors</option>
+        <option value="private-client">Private clients</option>
+      </select>
+      <button class="btn hide-in-present"><i class="ti ti-download"></i> Export list</button>
+    </div>
+    <div class="tbl-wrap card">
+      <table><thead><tr><th>Name</th><th>Email</th><th>Events attended</th><th>Last seen</th><th>Tag</th><th>Notes</th></tr></thead>
+      <tbody id="tbl-roster"></tbody>
+    </table></div>
   </div>
 
   <div id="sub-community-ambassadors" class="subpanel">
@@ -792,16 +823,44 @@ body.present-mode .present-banner{display:flex!important}
   </div>
 
   <div id="sub-community-campaigns" class="subpanel">
-    <!-- Engagement summary -->
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem">
-      <div class="stat"><div class="stat-label">Campaigns sent</div><div class="stat-val">3</div><div class="stat-sub">last 90 days</div></div>
-      <div class="stat" style="background:var(--green-fill)"><div class="stat-label" style="color:var(--green-text)">Avg open rate</div><div class="stat-val" style="color:var(--green-text)">62%</div><div class="stat-sub" style="color:var(--green-text)">industry avg: 21%</div></div>
-      <div class="stat"><div class="stat-label">Avg click rate</div><div class="stat-val">18%</div><div class="stat-sub">industry avg: 2.6%</div></div>
-      <div class="stat"><div class="stat-label">Total list size</div><div class="stat-val">487</div><div class="stat-sub">across all segments</div></div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:1.25rem">
+      <div class="stat" style="background:var(--green-fill)"><div class="stat-label" style="color:var(--green-text)">Avg open rate</div><div class="stat-val" style="color:var(--green-text)">62%</div><div class="stat-sub" style="color:var(--green-text)">vs 21% industry avg</div></div>
+      <div class="stat"><div class="stat-label">Total sent</div><div class="stat-val">4</div><div class="stat-sub">campaigns this year</div></div>
+      <div class="stat"><div class="stat-label">Total reach</div><div class="stat-val">1,575</div><div class="stat-sub">cumulative sends</div></div>
+      <div class="stat"><div class="stat-label">Avg click rate</div><div class="stat-val">8.9%</div></div>
+      <div class="stat" style="background:var(--blue-fill)"><div class="stat-label" style="color:var(--blue-text)">Best performer</div><div class="stat-val" style="color:var(--blue-text)">72%</div><div class="stat-sub" style="color:var(--blue-text)">Corporate Q3 email</div></div>
     </div>
-    <div class="toolbar">
+    <!-- Attendance trend mini chart -->
+    <div class="card padded" style="margin-bottom:1.25rem">
+      <div style="font-size:13px;font-weight:500;margin-bottom:12px">Event attendance trend</div>
+      <div style="display:flex;align-items:flex-end;gap:14px;height:80px;margin-bottom:8px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">
+          <div style="width:100%;background:var(--blue);border-radius:3px 3px 0 0" style="height:52px"></div>
+          <div style="background:var(--blue);border-radius:3px 3px 0 0;width:100%;height:52px"></div>
+          <div style="font-size:11px;color:var(--text3)">Feb</div><div style="font-size:12px;font-weight:500">162</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">
+          <div style="background:var(--blue);border-radius:3px 3px 0 0;width:100%;height:60px"></div>
+          <div style="font-size:11px;color:var(--text3)">Mar</div><div style="font-size:12px;font-weight:500">110</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">
+          <div style="background:var(--blue);border-radius:3px 3px 0 0;width:100%;height:68px"></div>
+          <div style="font-size:11px;color:var(--text3)">Apr</div><div style="font-size:12px;font-weight:500">148</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">
+          <div style="background:var(--green);border-radius:3px 3px 0 0;width:100%;height:80px"></div>
+          <div style="font-size:11px;color:var(--text3)">May</div><div style="font-size:12px;font-weight:500;color:var(--green-text)">176 🔥</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">
+          <div style="background:var(--bg3);border-radius:3px 3px 0 0;width:100%;height:40px;border:1px dashed var(--border2)"></div>
+          <div style="font-size:11px;color:var(--text3)">Jun</div><div style="font-size:12px;color:var(--text3)">TBD</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text2)">Target capacity for next event: <strong>200</strong> (The Gathering Spot, June 21)</div>
+    </div>
+    <div class="toolbar hide-in-present">
       <select id="filter-seg"><option>All lists</option><option>Trap Yoga community</option><option>Corporate contacts</option><option>Private clients</option><option>Leads</option></select>
-      <button class="btn primary hide-in-present" onclick="toggleEl('campaign-gen')"><i class="ti ti-sparkles"></i> Draft campaign</button>
+      <button class="btn primary" onclick="toggleEl('campaign-gen')"><i class="ti ti-sparkles"></i> Draft campaign</button>
     </div>
     <div id="campaign-gen" style="display:none" class="card padded" style="margin-bottom:1.25rem">
       <div style="font-size:14px;font-weight:500;margin-bottom:12px">Draft a new email campaign</div>
@@ -814,50 +873,23 @@ body.present-mode .present-banner{display:flex!important}
       <button class="btn primary" onclick="generateCampaign()"><i class="ti ti-sparkles"></i> Draft with Claude</button>
       <div id="cg-output" style="margin-top:14px;font-size:13px;line-height:1.7;color:var(--text2);white-space:pre-wrap;display:none;background:var(--bg2);border-radius:var(--radius);padding:1rem"></div>
     </div>
-    <div style="font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Campaign performance</div>
-    <div class="tbl-wrap card" style="margin-bottom:1.25rem">
-      <table><thead><tr><th>Campaign</th><th>Audience</th><th>Sent</th><th>Opens</th><th>Open rate</th><th>Clicks</th><th>Click rate</th><th>Status</th></tr></thead>
+    <div class="tbl-wrap card">
+      <table><thead><tr><th>Campaign</th><th>Audience</th><th>Sent</th><th>Open rate</th><th>Clicks</th><th>Click rate</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td style="font-weight:500">May Trap Yoga Recap + June Preview</td><td style="color:var(--text2)">TY Community (289)</td><td>May 3</td><td>176</td><td style="font-weight:500;color:var(--green-text)">61%</td><td>52</td><td style="color:var(--green-text)">18%</td><td><span class="badge b-coach">Sent</span></td></tr>
-        <tr><td style="font-weight:500">DC Gov Franklin Park — Free Summer Series</td><td style="color:var(--text2)">All contacts (441)</td><td>Apr 28</td><td>238</td><td style="font-weight:500;color:var(--green-text)">54%</td><td>83</td><td style="color:var(--green-text)">19%</td><td><span class="badge b-coach">Sent</span></td></tr>
-        <tr><td style="font-weight:500">Corporate Wellness — Q3 Availability</td><td style="color:var(--text2)">Corporate (44)</td><td>Apr 15</td><td>32</td><td style="font-weight:500;color:var(--green-text)">72%</td><td>8</td><td style="color:var(--green-text)">18%</td><td><span class="badge b-coach">Sent</span></td></tr>
-        <tr class="hide-in-present"><td style="font-weight:500">June Trap Yoga — Birthday Edition announcement</td><td style="color:var(--text2)">TY Community (312)</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><span class="badge b-lead">Draft</span></td></tr>
+        <tr><td style="font-weight:500">May TY Recap + June Preview</td><td style="color:var(--text2)">TY Community (289)</td><td>May 3</td><td><span style="font-weight:600;color:var(--green-text)">61%</span></td><td>47</td><td style="color:var(--text2)">16%</td><td><span class="badge b-coach">Sent</span></td></tr>
+        <tr><td style="font-weight:500">DC Gov Franklin Park — Free Series</td><td style="color:var(--text2)">All contacts (441)</td><td>Apr 28</td><td><span style="font-weight:600;color:var(--green-text)">54%</span></td><td>83</td><td style="color:var(--text2)">19%</td><td><span class="badge b-coach">Sent</span></td></tr>
+        <tr><td style="font-weight:500">Corporate Wellness — Q3 Availability</td><td style="color:var(--text2)">Corporate (44)</td><td>Apr 15</td><td><span style="font-weight:600;color:var(--green-text)">72%</span></td><td>11</td><td style="color:var(--text2)">25%</td><td><span class="badge b-coach">Sent</span></td></tr>
+        <tr><td style="font-weight:500">June TY — Birthday Edition announcement</td><td style="color:var(--text2)">TY Community (312)</td><td>—</td><td>—</td><td>—</td><td>—</td><td><span class="badge b-lead">Draft</span></td></tr>
       </tbody></table>
     </div>
-    <div class="insight insight-green">
-      <strong>📊 Top performer:</strong> The Corporate Wellness Q3 email hit <strong>72% open rate</strong> — 3× the industry average. Corporate contacts are highly engaged. The Trap Yoga community email drove <strong>52 clicks</strong> — 18 of those converted to check-in page visits within 24 hours.
+    <div class="insight insight-green" style="margin-top:1rem">
+      <strong>62% average open rate</strong> is nearly 3× the industry average for fitness/wellness (21%). This list is highly engaged — the community trusts Britt's emails. Each campaign announcement to the TY community drives measurable attendance lift.
     </div>
   </div>
-
-  <!-- ATTENDEE DATABASE (new) -->
-  <div id="sub-community-attendees" class="subpanel">
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem">
-      <div class="stat"><div class="stat-label">Total unique attendees</div><div class="stat-val">312</div><div class="stat-sub">across all events</div></div>
-      <div class="stat" style="background:var(--green-fill)"><div class="stat-label" style="color:var(--green-text)">Repeat attendees</div><div class="stat-val" style="color:var(--green-text)">89</div><div class="stat-sub" style="color:var(--green-text)">2+ events</div></div>
-      <div class="stat"><div class="stat-label">Emails captured</div><div class="stat-val">247</div><div class="stat-sub">79% of attendees</div></div>
-      <div class="stat"><div class="stat-label">Avg events per person</div><div class="stat-val">1.8</div><div class="stat-sub">growing each month</div></div>
-    </div>
-    <div class="toolbar">
-      <input id="search-attendees" type="text" placeholder="Search name, email, tag..." oninput="renderAttendees()">
-      <select id="filter-atag" onchange="renderAttendees()">
-        <option value="">All attendees</option>
-        <option value="superfan">Superfans (3+ events)</option>
-        <option value="repeat">Repeat (2 events)</option>
-        <option value="first-timer">First-timers</option>
-        <option value="ambassador-potential">Ambassador candidates</option>
-        <option value="private-client">Converted to private client</option>
-      </select>
-      <button class="btn" onclick="exportAttendees()"><i class="ti ti-download"></i> Export</button>
-    </div>
-    <div class="tbl-wrap card">
-      <table><thead><tr><th>Name</th><th>Email</th><th>Events attended</th><th>Last event</th><th>Tag</th><th>Notes</th></tr></thead>
-      <tbody id="tbl-attendees"></tbody>
-    </table></div>
-  </div>
-
 </div>
 
-<!-- ═══════════════════════════════ REVENUE & P&L ═══════════════════════════════ -->
+
+<!-- REVENUE & P&L -->
 <div id="panel-revenue" class="panel">
   <div class="topbar">
     <div><div class="topbar-title">Revenue &amp; P&amp;L</div><div class="topbar-sub">Financial intelligence across all 5 streams</div></div>
@@ -869,13 +901,13 @@ body.present-mode .present-banner{display:flex!important}
   </div>
   <div class="card padded" style="margin-bottom:1.25rem">
     <div style="font-size:13px;font-weight:500;margin-bottom:1rem">Monthly revenue by stream (2026)</div>
-    <div class="chart-bar-wrap" id="rev-chart"></div>
-    <div class="chart-legend">
-      <span><span class="legend-dot" style="background:var(--blue)"></span>Corporate</span>
-      <span><span class="legend-dot" style="background:var(--purple)"></span>Speaking</span>
-      <span><span class="legend-dot" style="background:var(--amber)"></span>Brand</span>
-      <span><span class="legend-dot" style="background:var(--coral)"></span>Trap Yoga</span>
-      <span><span class="legend-dot" style="background:var(--green)"></span>Coaching</span>
+    <div id="rev-chart" style="display:flex;align-items:flex-end;gap:8px;height:140px;padding-bottom:24px;position:relative"></div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:12px">
+      <span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2)"><span style="width:10px;height:10px;border-radius:2px;background:#378ADD;flex-shrink:0"></span>Corporate</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2)"><span style="width:10px;height:10px;border-radius:2px;background:#7F77DD;flex-shrink:0"></span>Speaking</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2)"><span style="width:10px;height:10px;border-radius:2px;background:#BA7517;flex-shrink:0"></span>Brand</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2)"><span style="width:10px;height:10px;border-radius:2px;background:#D85A30;flex-shrink:0"></span>Trap Yoga</span>
+      <span style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2)"><span style="width:10px;height:10px;border-radius:2px;background:#1D9E75;flex-shrink:0"></span>Coaching</span>
     </div>
   </div>
   <div class="tbl-wrap card" style="margin-bottom:1.5rem">
@@ -886,30 +918,213 @@ body.present-mode .present-banner{display:flex!important}
       <tr><td><span class="badge b-brand">Brand partnerships</span></td><td style="font-weight:500;color:var(--green-text)">$4,800</td><td>$15,000</td><td>lululemon</td><td style="color:var(--text2)">Ambassador retainer + 2 campaign deals</td></tr>
       <tr><td><span class="badge b-event">Trap Yoga</span></td><td style="font-weight:500;color:var(--green-text)">$4,200</td><td>$12,000</td><td>—</td><td style="color:var(--text2)">Monthly event; Gathering Spot sold out</td></tr>
       <tr><td><span class="badge b-coach">Private coaching</span></td><td style="font-weight:500;color:var(--green-text)">$2,000</td><td>—</td><td>Marcus Rivera</td><td style="color:var(--text2)">6 active 1:1 clients</td></tr>
-    </tbody>
+    </tbody></table>
   </div>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1rem">
-    <div class="stat" style="background:var(--green-fill)"><div class="stat-label" style="color:var(--green-text)">Net income this month</div><div class="stat-val" style="color:var(--green-text)">$31,850</div><div class="stat-sub" style="color:var(--green-text)">after all costs</div></div>
-    <div class="stat"><div class="stat-label">Instructor costs</div><div class="stat-val" style="color:var(--coral-text)">−$6,650</div><div class="stat-sub">Shalynn, Jake, Jordan</div></div>
-    <div class="stat" style="background:var(--blue-fill)"><div class="stat-label" style="color:var(--blue-text)">Most profitable / hr</div><div class="stat-val" style="color:var(--blue-text)">Corporate</div><div class="stat-sub" style="color:var(--blue-text)">$750/hr avg effective rate</div></div>
+    <div class="stat" style="background:var(--green-fill)"><div class="stat-label" style="color:var(--green-text)">Net income this month</div><div class="stat-val" style="color:var(--green-text)">$31,850</div></div>
+    <div class="stat"><div class="stat-label">Instructor costs</div><div class="stat-val" style="color:var(--coral-text)">−$6,650</div></div>
+    <div class="stat" style="background:var(--blue-fill)"><div class="stat-label" style="color:var(--blue-text)">Most profitable / hr</div><div class="stat-val" style="color:var(--blue-text)">Corporate</div><div class="stat-sub" style="color:var(--blue-text)">$758/hr avg</div></div>
   </div>
   <div class="tbl-wrap card" style="margin-bottom:1rem">
-    <table><thead><tr><th>Stream</th><th>Gross revenue</th><th>Instructor costs</th><th>Venue / other</th><th>Net</th><th>Hrs / mo</th><th>Net / hr</th></tr></thead>
+    <table><thead><tr><th>Stream</th><th>Gross</th><th>Instructor costs</th><th>Other costs</th><th>Net</th><th>Hrs/mo</th><th>Net/hr</th></tr></thead>
     <tbody>
-      <tr><td><span class="badge b-corp">Corporate wellness</span></td><td>$18,000</td><td style="color:var(--coral-text)">−$3,600</td><td style="color:var(--text2)">−$0</td><td style="font-weight:500;color:var(--green-text)">$14,400</td><td>19</td><td style="font-weight:500">$758/hr</td></tr>
-      <tr><td><span class="badge b-speak">Keynote speaking</span></td><td>$9,500</td><td style="color:var(--text2)">−$0</td><td style="color:var(--coral-text)">−$400</td><td style="font-weight:500;color:var(--green-text)">$9,100</td><td>14</td><td style="font-weight:500">$650/hr</td></tr>
-      <tr><td><span class="badge b-brand">Brand partnerships</span></td><td>$4,800</td><td style="color:var(--text2)">−$0</td><td style="color:var(--text2)">−$0</td><td style="font-weight:500;color:var(--green-text)">$4,800</td><td>8</td><td style="font-weight:500">$600/hr</td></tr>
+      <tr><td><span class="badge b-corp">Corporate</span></td><td>$18,000</td><td style="color:var(--coral-text)">−$3,600</td><td>—</td><td style="font-weight:500;color:var(--green-text)">$14,400</td><td>19</td><td style="font-weight:500">$758/hr</td></tr>
+      <tr><td><span class="badge b-speak">Speaking</span></td><td>$9,500</td><td>—</td><td style="color:var(--coral-text)">−$400</td><td style="font-weight:500;color:var(--green-text)">$9,100</td><td>14</td><td style="font-weight:500">$650/hr</td></tr>
+      <tr><td><span class="badge b-brand">Brand</span></td><td>$4,800</td><td>—</td><td>—</td><td style="font-weight:500;color:var(--green-text)">$4,800</td><td>8</td><td style="font-weight:500">$600/hr</td></tr>
       <tr><td><span class="badge b-event">Trap Yoga</span></td><td>$4,200</td><td style="color:var(--coral-text)">−$1,850</td><td style="color:var(--coral-text)">−$600</td><td style="font-weight:500;color:var(--amber-text)">$1,750</td><td>12</td><td style="font-weight:500;color:var(--amber-text)">$146/hr</td></tr>
-      <tr><td><span class="badge b-coach">Private coaching</span></td><td>$2,000</td><td style="color:var(--text2)">−$0</td><td style="color:var(--text2)">−$0</td><td style="font-weight:500;color:var(--green-text)">$2,000</td><td>8</td><td style="font-weight:500">$250/hr</td></tr>
+      <tr><td><span class="badge b-coach">Coaching</span></td><td>$2,000</td><td>—</td><td>—</td><td style="font-weight:500;color:var(--green-text)">$2,000</td><td>8</td><td style="font-weight:500">$250/hr</td></tr>
       <tr style="font-weight:500"><td>Total</td><td>$38,500</td><td style="color:var(--coral-text)">−$5,450</td><td style="color:var(--coral-text)">−$1,000</td><td style="color:var(--green-text)">$32,050</td><td>61</td><td>$525/hr</td></tr>
-    </tbody>
+    </tbody></table>
   </div>
-  <div class="insight insight-amber">
-    <strong>💡 Key insight:</strong> Trap Yoga generates the most buzz but only <strong>$146/hr net</strong> — corporate wellness generates <strong>$758/hr net</strong>. The DC Gov grant sessions at $2,500 each cost ~$800 in instructor fees, netting $1,700/session. This doesn't mean Trap Yoga isn't valuable — its community and brand-building value are off-balance-sheet — but corporate wellness should remain the revenue priority.
+  <div style="padding:1rem 1.25rem;border-radius:var(--radius-lg);background:var(--amber-fill);color:var(--amber-text);font-size:13px;line-height:1.6">
+    <strong>Key insight:</strong> Trap Yoga generates the most buzz but only $146/hr net — corporate wellness generates $758/hr net. Corporate wellness should remain the revenue priority.
   </div>
 </div>
 
-<!-- ═══════════════════════════════ MEDIA & SPEAKING ═══════════════════════════════ -->
+<!-- COMPANY BRAIN -->
+<div id="panel-brain" class="panel">
+  <div class="topbar">
+    <div><div class="topbar-title">Company Brain</div><div class="topbar-sub">Institutional knowledge · Playbooks · Positioning · Relationship context</div></div>
+  </div>
+  <div class="subtab-bar">
+    <button class="subtab active" data-target="sub-brain-fundamentals" onclick="switchSub('brain','fundamentals')">Business Fundamentals</button>
+    <button class="subtab" data-target="sub-brain-positioning" onclick="switchSub('brain','positioning')">Positioning &amp; Voice</button>
+    <button class="subtab" data-target="sub-brain-playbooks" onclick="switchSub('brain','playbooks')">Playbooks</button>
+    <button class="subtab" data-target="sub-brain-relationships" onclick="switchSub('brain','relationships')">Relationship Context</button>
+    <button class="subtab" data-target="sub-brain-goals" onclick="switchSub('brain','goals')">Goals &amp; Vision</button>
+  </div>
+  <div id="sub-brain-fundamentals" class="subpanel active">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:1.25rem">
+      <div class="card padded">
+        <div style="font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">The origin story</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">Britt Dupree Daniels lost 60+ lbs after a transformative period living abroad in Japan. He returned to DC, earned his NASM certification and 200-hr yoga teacher training, and founded <strong style="color:var(--text)">Prophet Fitness LLC</strong>. Prophet — not profit. Built on the belief that wellness should be accessible, joyful, and culturally resonant.</div>
+      </div>
+      <div class="card padded">
+        <div style="font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Credentials</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.9">
+          🎓 Georgetown University alum<br>
+          💪 NASM Certified Personal Trainer<br>
+          🧘 200-hr Yoga Alliance RYT<br>
+          🏆 DC Magazine Best Personal Trainer<br>
+          👟 lululemon Brand Ambassador<br>
+          🏛️ DC Government Wellness Ambassador<br>
+          📺 Fox 5 DC · Ebony · Washington Post
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+      <div style="padding:10px 12px;background:var(--blue-fill);border-radius:var(--radius)"><div style="font-size:11px;font-weight:600;color:var(--blue-text);margin-bottom:4px">CORPORATE · $758/hr</div><div style="font-size:12px;color:var(--blue-text)">Anchor clients: Salesforce, Cigna, Google</div></div>
+      <div style="padding:10px 12px;background:var(--purple-fill);border-radius:var(--radius)"><div style="font-size:11px;font-weight:600;color:var(--purple-text);margin-bottom:4px">SPEAKING · $6–12K</div><div style="font-size:12px;color:var(--purple-text)">3 keynote topics. Growing fast.</div></div>
+      <div style="padding:10px 12px;background:var(--amber-fill);border-radius:var(--radius)"><div style="font-size:11px;font-weight:600;color:var(--amber-text);margin-bottom:4px">BRAND · Retainer+</div><div style="font-size:12px;color:var(--amber-text)">lululemon anchor. Selective on fit.</div></div>
+      <div style="padding:10px 12px;background:var(--coral-fill);border-radius:var(--radius)"><div style="font-size:11px;font-weight:600;color:var(--coral-text);margin-bottom:4px">TRAP YOGA · Brand engine</div><div style="font-size:12px;color:var(--coral-text)">$146/hr but drives everything else.</div></div>
+      <div style="padding:10px 12px;background:var(--green-fill);border-radius:var(--radius)"><div style="font-size:11px;font-weight:600;color:var(--green-text);margin-bottom:4px">COACHING · $250–350/hr</div><div style="font-size:12px;color:var(--green-text)">Referrals only. Max 8 clients.</div></div>
+    </div>
+  </div>
+  <div id="sub-brain-positioning" class="subpanel">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:1.25rem">
+      <div class="card padded">
+        <div style="font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">How Britt describes himself</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:12px;font-style:italic">"I'm a wellness architect. I help people and organizations design sustainable systems for health. My work sits at the intersection of movement, mindset, and culture."</div>
+        <div style="display:grid;gap:5px">
+          <div style="padding:6px 10px;background:var(--green-fill);border-radius:var(--radius);font-size:12px;color:var(--green-text)">✓ "Wellness architect" — not trainer, not coach</div>
+          <div style="padding:6px 10px;background:var(--green-fill);border-radius:var(--radius);font-size:12px;color:var(--green-text)">✓ "Inside out" — mindset before movement</div>
+          <div style="padding:6px 10px;background:var(--green-fill);border-radius:var(--radius);font-size:12px;color:var(--green-text)">✓ "Sustainable" — not a 30-day program</div>
+          <div style="padding:6px 10px;background:var(--red-fill);border-radius:var(--radius);font-size:12px;color:var(--red-text)">✗ "Fitness influencer" — too shallow</div>
+          <div style="padding:6px 10px;background:var(--red-fill);border-radius:var(--radius);font-size:12px;color:var(--red-text)">✗ "Personal trainer" alone — undersells the scope</div>
+        </div>
+      </div>
+      <div class="card padded">
+        <div style="font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Pricing floors — never go below these</div>
+        <div style="display:grid;gap:8px">
+          <div style="padding:10px 12px;background:var(--bg2);border-radius:var(--radius)"><div style="font-size:12px;font-weight:500">Corporate program</div><div style="font-size:15px;font-weight:600;color:var(--green-text)">$15,000–$24,000/yr</div></div>
+          <div style="padding:10px 12px;background:var(--bg2);border-radius:var(--radius)"><div style="font-size:12px;font-weight:500">Keynote</div><div style="font-size:15px;font-weight:600;color:var(--green-text)">$6,000 minimum</div></div>
+          <div style="padding:10px 12px;background:var(--bg2);border-radius:var(--radius)"><div style="font-size:12px;font-weight:500">Brand campaign</div><div style="font-size:15px;font-weight:600;color:var(--green-text)">$8,000–$15,000</div></div>
+          <div style="padding:10px 12px;background:var(--bg2);border-radius:var(--radius)"><div style="font-size:12px;font-weight:500">Private coaching</div><div style="font-size:15px;font-weight:600;color:var(--green-text)">$250/session — no discounts</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card padded">
+      <div style="font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">What Britt says yes and no to</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--green-text);margin-bottom:6px">✓ YES</div>
+          <div style="display:grid;gap:5px;font-size:13px;color:var(--text2)">
+            <div>Corporate clients who want ongoing programs, not one-offs</div>
+            <div>Speaking at Black professional organizations</div>
+            <div>Brand deals where the product is something Britt actually uses</div>
+            <div>Events where Trap Yoga can own the cultural moment</div>
+            <div>Grants and public sector partnerships</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--red-text);margin-bottom:6px">✗ NO</div>
+          <div style="display:grid;gap:5px;font-size:13px;color:var(--text2)">
+            <div>One-session corporate workshops with no follow-up</div>
+            <div>Supplement, weight loss, or diet culture brand deals</div>
+            <div>Speaking for less than $5K unless strategic media exposure</div>
+            <div>Private clients who want a quick fix</div>
+            <div>Events where Trap Yoga is a side act</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="sub-brain-playbooks" class="subpanel">
+    <div style="display:grid;gap:12px">
+      <div class="card padded">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--blue-fill);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📥</div>
+          <div><div style="font-weight:500">New corporate wellness inquiry → signed contract</div></div>
+        </div>
+        <div style="display:grid;gap:6px;font-size:13px">
+          <div style="display:flex;gap:10px;padding:8px 10px;background:var(--bg2);border-radius:var(--radius)"><span style="color:var(--text3);min-width:20px;font-weight:600">1</span><span>Reply within 24h. Confirm they're a decision-maker. Ask: team size, current wellness, what's not working.</span></div>
+          <div style="display:flex;gap:10px;padding:8px 10px;background:var(--bg2);border-radius:var(--radius)"><span style="color:var(--text3);min-width:20px;font-weight:600">2</span><span>Schedule 30-min discovery call. Britt-led. Goal: understand pain points and budget signals.</span></div>
+          <div style="display:flex;gap:10px;padding:8px 10px;background:var(--bg2);border-radius:var(--radius)"><span style="color:var(--text3);min-width:20px;font-weight:600">3</span><span>Within 48h of call: send tailored proposal. Reference their specific pain points.</span></div>
+          <div style="display:flex;gap:10px;padding:8px 10px;background:var(--bg2);border-radius:var(--radius)"><span style="color:var(--text3);min-width:20px;font-weight:600">4</span><span>No reply in 7 days: brief follow-up from Britt personally. One sentence. No pressure.</span></div>
+          <div style="display:flex;gap:10px;padding:8px 10px;background:var(--green-fill);border-radius:var(--radius)"><span style="color:var(--green-text);min-width:20px;font-weight:600">✓</span><span style="color:var(--green-text)">Verbal yes: send contract same day. DocuSign. Don't let it sit.</span></div>
+        </div>
+      </div>
+      <div class="card padded">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--amber-fill);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🎵</div>
+          <div><div style="font-weight:500">Post Trap Yoga event routine</div></div>
+        </div>
+        <div style="display:grid;gap:6px;font-size:13px">
+          <div style="display:flex;gap:10px;padding:8px 10px;background:var(--bg2);border-radius:var(--radius)"><span style="color:var(--text3);min-width:20px;font-weight:600">1</span><span>Same day: export check-in emails. Add new addresses to TY community list.</span></div>
+          <div style="display:flex;gap:10px;padding:8px 10px;background:var(--bg2);border-radius:var(--radius)"><span style="color:var(--text3);min-width:20px;font-weight:600">2</span><span>Review attendees: anyone new who came 2+ times → ambassador candidate. Any corporate names?</span></div>
+          <div style="display:flex;gap:10px;padding:8px 10px;background:var(--bg2);border-radius:var(--radius)"><span style="color:var(--text3);min-width:20px;font-weight:600">3</span><span>Within 24h: send recap email to TY list. Best photo, attendance number, next event date.</span></div>
+          <div style="display:flex;gap:10px;padding:8px 10px;background:var(--bg2);border-radius:var(--radius)"><span style="color:var(--text3);min-width:20px;font-weight:600">4</span><span>If DC Gov event: instructor submits attendance form within 5 days. Add to grant tracker.</span></div>
+          <div style="display:flex;gap:10px;padding:8px 10px;background:var(--green-fill);border-radius:var(--radius)"><span style="color:var(--green-text);min-width:20px;font-weight:600">✓</span><span style="color:var(--green-text)">Update Events tab: final attendance, revenue, photos.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="sub-brain-relationships" class="subpanel">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:1.25rem">The backstory behind the key relationships — context the assistant needs to work these accounts well.</p>
+    <div style="display:grid;gap:10px">
+      <div class="card padded" style="border-left:3px solid var(--blue)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div class="avatar av-blue">SF</div>
+          <div><div style="font-weight:500">Salesforce — Marcus Webb</div><div style="font-size:12px;color:var(--text2)">$24,000/yr · Anchor client · Renews Sep 2026</div></div>
+        </div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.7">Britt's longest-running corporate client. Came through cold outreach → pilot session → converted. Marcus has referred two other contacts. <strong style="color:var(--text)">Start renewal conversation by July. Do not let this slip.</strong></div>
+      </div>
+      <div class="card padded" style="border-left:3px solid var(--green)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div class="avatar av-green">CI</div>
+          <div><div style="font-weight:500">Cigna — Dr. Janet Huang</div><div style="font-size:12px;color:var(--text2)">$18,000/yr · Renews Aug 2026 · Referred Aetna intro</div></div>
+        </div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.7">Came through a lululemon referral. The Cigna contract validated the corporate model. Huang gave the warm intro to Aetna. <strong style="color:var(--text)">Most valuable connector in the network — treat with care.</strong></div>
+      </div>
+      <div class="card padded" style="border-left:3px solid var(--amber)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div class="avatar av-amber">LL</div>
+          <div><div style="font-weight:500">lululemon — Simone Adler</div><div style="font-size:12px;color:var(--text2)">$36,000/yr · Brand anchor · Referred Adidas</div></div>
+        </div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.7">Most visible brand partnership. Adidas came through Simone. The lululemon badge is on every pitch deck. <strong style="color:var(--text)">Over-deliver on every deliverable — this relationship has compounding returns.</strong></div>
+      </div>
+      <div class="card padded" style="border-left:3px solid var(--purple)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div class="avatar av-purple">SB</div>
+          <div><div style="font-weight:500">Shalynn Burrill — Co-instructor</div><div style="font-size:12px;color:var(--text2)">$400/event · Key person risk</div></div>
+        </div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.7">Co-instructed every major Trap Yoga event. Backup for two corporate contracts. If unavailable, events are hard to run. <strong style="color:var(--text)">Formalize with a contractor agreement. Identify a second backup.</strong></div>
+      </div>
+    </div>
+  </div>
+  <div id="sub-brain-goals" class="subpanel">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">2026 targets</div>
+        <div style="display:grid;gap:8px">
+          <div class="card padded" style="display:flex;align-items:center;gap:12px"><div style="font-size:22px;font-weight:500;color:var(--green-text);min-width:80px">$500K</div><div><div style="font-weight:500;font-size:13px">Annual revenue</div><div style="font-size:12px;color:var(--text2)">From ~$380K run rate. Corporate expansion is the lever.</div></div></div>
+          <div class="card padded" style="display:flex;align-items:center;gap:12px"><div style="font-size:22px;font-weight:500;color:var(--blue-text);min-width:80px">10</div><div><div style="font-weight:500;font-size:13px">Active corporate contracts</div><div style="font-size:12px;color:var(--text2)">Currently 4. Target: 10 at $15K+ each.</div></div></div>
+          <div class="card padded" style="display:flex;align-items:center;gap:12px"><div style="font-size:22px;font-weight:500;color:var(--purple-text);min-width:80px">6</div><div><div style="font-weight:500;font-size:13px">Keynote engagements</div><div style="font-size:12px;color:var(--text2)">2 confirmed. Target 6 at avg $8K = $48K.</div></div></div>
+          <div class="card padded" style="display:flex;align-items:center;gap:12px"><div style="font-size:22px;font-weight:500;color:var(--coral-text);min-width:80px">200+</div><div><div style="font-weight:500;font-size:13px">Avg Trap Yoga attendance</div><div style="font-size:12px;color:var(--text2)">Currently ~149 avg. Need a bigger venue.</div></div></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">3-year vision</div>
+        <div class="card padded" style="background:var(--bg2);margin-bottom:10px">
+          <div style="font-size:14px;font-weight:500;margin-bottom:8px">Prophet Fitness as a platform, not just a person</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.8">Trap Yoga runs in multiple cities with certified instructors. Corporate wellness delivered by a small team. Britt's time reserved for keynotes, strategy, and brand.</div>
+        </div>
+        <div class="card padded" style="background:var(--bg2)">
+          <div style="font-size:13px;font-weight:500;margin-bottom:8px">Milestones</div>
+          <div style="display:grid;gap:6px;font-size:13px;color:var(--text2)">
+            <div>→ Formalize Shalynn + 1 instructor as certified Trap Yoga leads</div>
+            <div>→ Run one NYC event — proof of concept for expansion</div>
+            <div>→ Hit 10 corporate accounts — enough to hire full-time assistant</div>
+            <div>→ Land a national brand deal (Nike, Under Armour tier)</div>
+            <div>→ Publish the Wellness Blueprint as a book or course</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MEDIA & SPEAKING -->
 <div id="panel-media" class="panel">
   <div class="topbar">
     <div><div class="topbar-title">Media &amp; Speaking</div><div class="topbar-sub">Speaker kit · Press log · Sponsorships</div></div>
@@ -918,45 +1133,34 @@ body.present-mode .present-banner{display:flex!important}
       <button class="btn primary" onclick="showSpeakerKitPreview()"><i class="ti ti-download"></i> Speaker kit PDF</button>
     </div>
   </div>
-
-  <!-- Stats always visible -->
   <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:1.25rem">
-    <div class="stat" style="background:var(--green-fill)"><div class="stat-label" style="color:var(--green-text)">Speaking pipeline</div><div class="stat-val" style="color:var(--green-text)">$19,000</div><div class="stat-sub" style="color:var(--green-text)">3 confirmed + pipeline</div></div>
+    <div class="stat" style="background:var(--green-fill)"><div class="stat-label" style="color:var(--green-text)">Speaking pipeline</div><div class="stat-val" style="color:var(--green-text)">$19,000</div></div>
     <div class="stat"><div class="stat-label">Press appearances</div><div class="stat-val">14</div><div class="stat-sub">8 outlets</div></div>
-    <div class="stat"><div class="stat-label">Estimated reach</div><div class="stat-val">2.4M</div><div class="stat-sub">all appearances</div></div>
-    <div class="stat"><div class="stat-label">Sponsorship / event</div><div class="stat-val">$3,200</div><div class="stat-sub">3 active sponsors</div></div>
-    <div class="stat" style="background:var(--blue-fill)"><div class="stat-label" style="color:var(--blue-text)">Keynote fee range</div><div class="stat-val" style="color:var(--blue-text)">$6–12K</div><div class="stat-sub" style="color:var(--blue-text)">keynote · $3–6K workshop</div></div>
+    <div class="stat"><div class="stat-label">Estimated reach</div><div class="stat-val">2.4M</div></div>
+    <div class="stat"><div class="stat-label">Sponsorship / event</div><div class="stat-val">$3,200</div></div>
+    <div class="stat" style="background:var(--blue-fill)"><div class="stat-label" style="color:var(--blue-text)">Keynote fee range</div><div class="stat-val" style="color:var(--blue-text)">$6–12K</div></div>
   </div>
-
   <div class="subtab-bar">
-    <button class="subtab active" onclick="switchSub('media','speaker')">Speaker Kit</button>
-    <button class="subtab" onclick="switchSub('media','press')">Press &amp; Media</button>
-    <button class="subtab" onclick="switchSub('media','sponsorships')">Sponsorships</button>
+    <button class="subtab active" data-target="sub-media-speaker" onclick="switchSub('media','speaker')">Speaker Kit</button>
+    <button class="subtab" data-target="sub-media-press" onclick="switchSub('media','press')">Press &amp; Media</button>
+    <button class="subtab" data-target="sub-media-sponsorships" onclick="switchSub('media','sponsorships')">Sponsorships</button>
   </div>
-
-  <!-- SPEAKER KIT -->
   <div id="sub-media-speaker" class="subpanel active">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
       <div class="card padded">
         <div style="font-size:13px;font-weight:500;margin-bottom:12px">Speaker profile</div>
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
           <div class="avatar av-blue" style="width:52px;height:52px;font-size:18px">BDD</div>
-          <div>
-            <div style="font-size:15px;font-weight:500">Britt Dupree Daniels</div>
-            <div style="font-size:12px;color:var(--text2)">Wellness Architect · Washington D.C.</div>
-            <div style="font-size:12px;color:var(--text2)">Georgetown University · NASM · 200-hr Yoga Alliance</div>
-          </div>
+          <div><div style="font-size:15px;font-weight:500">Britt Dupree Daniels</div><div style="font-size:12px;color:var(--text2)">Wellness Architect · Washington D.C.</div><div style="font-size:12px;color:var(--text2)">Georgetown · NASM · 200-hr Yoga Alliance</div></div>
         </div>
-        <div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px">Award-winning wellness architect who lost 60+ lbs and built a thriving practice on the belief that sustainable health starts from the inside out. Corporate clients include Google, Salesforce, Cigna, Microsoft, and Amazon. Creator of Trap Yoga — DC's fastest-growing wellness event series, viral with 80K+ views.</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:14px">Award-winning wellness architect who lost 60+ lbs. Corporate clients include Google, Salesforce, Cigna. Creator of Trap Yoga — DC's fastest-growing wellness event series, viral with 80K+ views.</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
-          <span class="badge b-corp">DC Magazine Best Personal Trainer</span>
+          <span class="badge b-corp">DC Mag Best Personal Trainer</span>
           <span class="badge b-brand">lululemon Ambassador</span>
           <span class="badge b-speak">Fox 5 DC Featured</span>
-          <span class="badge b-coach">DC Gov Ambassador</span>
         </div>
         <div style="padding:10px 12px;background:var(--green-fill);border-radius:var(--radius);margin-bottom:10px">
-          <div style="font-size:12px;font-weight:500;color:var(--green-text)">Keynote fee: $6,000–$12,000 · Workshop: $3,000–$6,000</div>
-          <div style="font-size:11px;color:var(--green-text);margin-top:2px">Travel + accommodation additional. Virtual available.</div>
+          <div style="font-size:12px;font-weight:500;color:var(--green-text)">Keynote: $6,000–$12,000 · Workshop: $3,000–$6,000</div>
         </div>
         <button class="btn primary" style="width:100%" onclick="showSpeakerKitPreview()"><i class="ti ti-download"></i> Download speaker kit PDF</button>
       </div>
@@ -964,40 +1168,25 @@ body.present-mode .present-banner{display:flex!important}
         <div class="card padded" style="margin-bottom:12px">
           <div style="font-size:13px;font-weight:500;margin-bottom:10px">Keynote topics</div>
           <div style="display:grid;gap:8px">
-            <div style="padding:10px 12px;background:var(--bg2);border-radius:var(--radius)">
-              <div style="font-size:13px;font-weight:500;margin-bottom:4px">The Wellness Blueprint</div>
-              <div style="font-size:12px;color:var(--text2)">How to build sustainable health habits that compound — for individuals and teams. 45–60 min keynote or workshop.</div>
-            </div>
-            <div style="padding:10px 12px;background:var(--bg2);border-radius:var(--radius)">
-              <div style="font-size:13px;font-weight:500;margin-bottom:4px">Movement as Medicine</div>
-              <div style="font-size:12px;color:var(--text2)">Mindfulness, movement, and mental health — the science and the practice. Popular with corporate and healthcare audiences.</div>
-            </div>
-            <div style="padding:10px 12px;background:var(--bg2);border-radius:var(--radius)">
-              <div style="font-size:13px;font-weight:500;margin-bottom:4px">From Breakdown to Blueprint</div>
-              <div style="font-size:12px;color:var(--text2)">Britt's personal story — 60-lb weight loss, Japan, and building Prophet Fitness. Motivational, personal, high-impact.</div>
-            </div>
+            <div style="padding:10px 12px;background:var(--bg2);border-radius:var(--radius)"><div style="font-size:13px;font-weight:500;margin-bottom:3px">The Wellness Blueprint</div><div style="font-size:12px;color:var(--text2)">Building sustainable health habits that compound — for individuals and teams. 45–60 min.</div></div>
+            <div style="padding:10px 12px;background:var(--bg2);border-radius:var(--radius)"><div style="font-size:13px;font-weight:500;margin-bottom:3px">Movement as Medicine</div><div style="font-size:12px;color:var(--text2)">Mindfulness, movement, and mental health. Popular with corporate and healthcare audiences.</div></div>
+            <div style="padding:10px 12px;background:var(--bg2);border-radius:var(--radius)"><div style="font-size:13px;font-weight:500;margin-bottom:3px">From Breakdown to Blueprint</div><div style="font-size:12px;color:var(--text2)">Britt's personal story — 60-lb weight loss, Japan, building Prophet Fitness. High-impact.</div></div>
           </div>
         </div>
         <div class="card padded">
-          <div style="font-size:13px;font-weight:500;margin-bottom:10px">Speaking history</div>
+          <div style="font-size:13px;font-weight:500;margin-bottom:10px">Upcoming engagements</div>
           <div class="tbl-wrap">
-            <table><thead><tr><th>Event</th><th>Organizer</th><th>Date</th><th>Fee</th><th>Status</th></tr></thead>
+            <table><thead><tr><th>Event</th><th>Date</th><th>Fee</th><th>Status</th></tr></thead>
             <tbody>
-              <tr><td style="font-weight:500">Ebony Fit Weekend</td><td>Ebony Media</td><td>Sep 2026</td><td style="font-weight:500;color:var(--green-text)">$6,000</td><td><span class="badge b-coach">Confirmed</span></td></tr>
-              <tr><td style="font-weight:500">Georgetown Wellness Summit</td><td>Georgetown University</td><td>Nov 2026</td><td style="font-weight:500;color:var(--amber-text)">$8,000</td><td><span class="badge b-brand">Negotiating</span></td></tr>
-              <tr><td style="font-weight:500">NBMBAA DC Chapter</td><td>Nat'l Black MBA Assoc.</td><td>Oct 2026</td><td style="color:var(--text2)">$5,000</td><td><span class="badge b-lead">Inquiry</span></td></tr>
-              <tr><td style="font-weight:500">Fox 5 DC Good Day</td><td>Fox 5 DC</td><td>Mar 2026</td><td style="color:var(--text2)">Media</td><td><span class="badge b-corp">Completed</span></td></tr>
+              <tr><td style="font-weight:500">Ebony Fit Weekend</td><td>Sep 2026</td><td style="color:var(--green-text)">$6,000</td><td><span class="badge b-coach">Confirmed</span></td></tr>
+              <tr><td style="font-weight:500">Georgetown Wellness Summit</td><td>Nov 2026</td><td style="color:var(--amber-text)">$8,000</td><td><span class="badge b-brand">Negotiating</span></td></tr>
+              <tr><td style="font-weight:500">NBMBAA DC Chapter</td><td>Oct 2026</td><td style="color:var(--text2)">$5,000</td><td><span class="badge b-lead">Inquiry</span></td></tr>
             </tbody></table>
           </div>
         </div>
       </div>
     </div>
-    <div class="insight insight-blue" style="margin-top:1.25rem">
-      <strong>💡 Send the speaker kit to bookers in one click</strong> — the PDF includes bio, keynote topics, fee schedule, testimonials, and media logos. Georgetown and NBMBAA are both waiting — use the button above.
-    </div>
   </div>
-
-  <!-- PRESS & MEDIA -->
   <div id="sub-media-press" class="subpanel">
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem">
       <div class="stat"><div class="stat-label">Total appearances</div><div class="stat-val">14</div></div>
@@ -1005,106 +1194,73 @@ body.present-mode .present-banner{display:flex!important}
       <div class="stat"><div class="stat-label">Est. total reach</div><div class="stat-val">2.4M</div></div>
       <div class="stat" style="background:var(--green-fill)"><div class="stat-label" style="color:var(--green-text)">This year</div><div class="stat-val" style="color:var(--green-text)">6</div></div>
     </div>
-    <div class="toolbar hide-in-present">
-      <button class="btn primary"><i class="ti ti-plus"></i> Log appearance</button>
-      <button class="btn" onclick="showMediaKit()"><i class="ti ti-download"></i> Download media kit PDF</button>
-    </div>
-    <div class="tbl-wrap card" style="margin-bottom:1.25rem">
-      <table><thead><tr><th>Outlet</th><th>Type</th><th>Title / Topic</th><th>Date</th><th>Reach</th><th></th></tr></thead>
+    <div class="toolbar hide-in-present"><button class="btn primary"><i class="ti ti-plus"></i> Log appearance</button><button class="btn" onclick="showMediaKit()"><i class="ti ti-download"></i> Media kit PDF</button></div>
+    <div class="tbl-wrap card">
+      <table><thead><tr><th>Outlet</th><th>Type</th><th>Topic</th><th>Date</th><th>Reach</th><th></th></tr></thead>
       <tbody>
-        <tr><td style="font-weight:500">Washington Post</td><td><span class="badge b-event">Feature</span></td><td>Trap Yoga goes viral in DC — the story behind it</td><td>May 2026</td><td style="font-weight:500">680K readers</td><td><button class="btn sm">View</button></td></tr>
-        <tr><td style="font-weight:500">Fox 5 DC</td><td><span class="badge b-speak">TV segment</span></td><td>Good Day DC — Wellness in the workplace</td><td>Mar 2026</td><td>180K viewers</td><td><button class="btn sm">View</button></td></tr>
-        <tr><td style="font-weight:500">Ebony Magazine</td><td><span class="badge b-brand">Feature</span></td><td>The New Face of Black Wellness</td><td>Feb 2026</td><td style="font-weight:500">1.2M readers</td><td><button class="btn sm">View</button></td></tr>
-        <tr><td style="font-weight:500">DC Magazine</td><td><span class="badge b-corp">Award</span></td><td>Best Personal Trainer 2025</td><td>Dec 2025</td><td>320K readers</td><td><button class="btn sm">View</button></td></tr>
-        <tr><td style="font-weight:500">WTOP Radio</td><td><span class="badge b-speak">Interview</span></td><td>DC's wellness renaissance</td><td>Jan 2026</td><td>210K listeners</td><td><button class="btn sm">View</button></td></tr>
-        <tr><td style="font-weight:500">Black Enterprise</td><td><span class="badge b-brand">Feature</span></td><td>Building a wellness brand in the modern era</td><td>Nov 2025</td><td>480K readers</td><td><button class="btn sm">View</button></td></tr>
-        <tr><td style="font-weight:500">DCist</td><td><span class="badge b-event">Feature</span></td><td>Trap Yoga is the event DC didn't know it needed</td><td>Oct 2025</td><td>190K readers</td><td><button class="btn sm">View</button></td></tr>
-        <tr><td style="font-weight:500">NBC4 Washington</td><td><span class="badge b-speak">TV segment</span></td><td>Morning show — corporate wellness trends</td><td>Sep 2025</td><td>290K viewers</td><td><button class="btn sm">View</button></td></tr>
+        <tr><td style="font-weight:500">Washington Post</td><td><span class="badge b-event">Feature</span></td><td>Trap Yoga goes viral in DC</td><td>May 2026</td><td>680K</td><td><button class="btn sm">View</button></td></tr>
+        <tr><td style="font-weight:500">Fox 5 DC</td><td><span class="badge b-speak">TV</span></td><td>Good Day DC — Wellness at work</td><td>Mar 2026</td><td>180K</td><td><button class="btn sm">View</button></td></tr>
+        <tr><td style="font-weight:500">Ebony Magazine</td><td><span class="badge b-brand">Feature</span></td><td>The New Face of Black Wellness</td><td>Feb 2026</td><td>1.2M</td><td><button class="btn sm">View</button></td></tr>
+        <tr><td style="font-weight:500">DC Magazine</td><td><span class="badge b-corp">Award</span></td><td>Best Personal Trainer 2025</td><td>Dec 2025</td><td>320K</td><td><button class="btn sm">View</button></td></tr>
+        <tr><td style="font-weight:500">WTOP Radio</td><td><span class="badge b-speak">Interview</span></td><td>DC's wellness renaissance</td><td>Jan 2026</td><td>210K</td><td><button class="btn sm">View</button></td></tr>
+        <tr><td style="font-weight:500">Black Enterprise</td><td><span class="badge b-brand">Feature</span></td><td>Building a wellness brand</td><td>Nov 2025</td><td>480K</td><td><button class="btn sm">View</button></td></tr>
       </tbody></table>
     </div>
-    <div class="insight insight-amber">
-      <strong>Media kit ready to send</strong> — includes all 14 appearances, outlet logos, estimated reach of 2.4M, and 3 headshot options. Use the Download button above to pull it as a PDF for journalists, bookers, and brand partners.
-    </div>
   </div>
-
-  <!-- SPONSORSHIPS -->
   <div id="sub-media-sponsorships" class="subpanel">
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem">
       <div class="stat"><div class="stat-label">Active sponsors</div><div class="stat-val">3</div></div>
       <div class="stat"><div class="stat-label">Revenue / event</div><div class="stat-val">$3,200</div></div>
-      <div class="stat"><div class="stat-label">Inbound inquiries</div><div class="stat-val">2</div></div>
-      <div class="stat" style="background:var(--green-fill)"><div class="stat-label" style="color:var(--green-text)">Summer series total</div><div class="stat-val" style="color:var(--green-text)">$25,600</div><div class="stat-sub" style="color:var(--green-text)">8 events × $3,200</div></div>
+      <div class="stat"><div class="stat-label">Inquiries</div><div class="stat-val">2</div></div>
+      <div class="stat" style="background:var(--green-fill)"><div class="stat-label" style="color:var(--green-text)">Summer series total</div><div class="stat-val" style="color:var(--green-text)">$25,600</div></div>
     </div>
-    <div class="toolbar hide-in-present"><button class="btn primary"><i class="ti ti-plus"></i> Add sponsor</button></div>
-    <div class="tbl-wrap card" style="margin-bottom:1.25rem">
-      <table><thead><tr><th>Sponsor</th><th>Package</th><th>Deliverables</th><th>Per-event value</th><th>Status</th></tr></thead>
+    <div class="tbl-wrap card" style="margin-bottom:1rem">
+      <table><thead><tr><th>Sponsor</th><th>Package</th><th>Deliverables</th><th>Value/event</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td style="font-weight:500">Vita Coco</td><td><span class="badge b-corp">Title sponsor</span></td><td>Logo on mat, 2 IG posts, product sampling</td><td style="font-weight:500">$1,500</td><td><span class="badge b-coach">Active</span></td></tr>
-        <tr><td style="font-weight:500">lululemon DC</td><td><span class="badge b-brand">Community sponsor</span></td><td>Banner at event, IG story mention</td><td style="font-weight:500">$1,000</td><td><span class="badge b-coach">Active</span></td></tr>
-        <tr><td style="font-weight:500">Whole Foods Market</td><td><span class="badge b-event">Snack sponsor</span></td><td>Post-class snacks, logo on flyer</td><td style="font-weight:500">$700</td><td><span class="badge b-coach">Active</span></td></tr>
-        <tr><td style="font-weight:500">Nike DC</td><td><span class="badge b-lead">In conversation</span></td><td>TBD — discussing title sponsorship</td><td style="font-weight:500">$2,000+</td><td><span class="badge b-lead">Inquiry</span></td></tr>
-        <tr><td style="font-weight:500">Nuun Hydration</td><td><span class="badge b-lead">In conversation</span></td><td>Product activation, social mention</td><td style="font-weight:500">$500+</td><td><span class="badge b-lead">Inquiry</span></td></tr>
+        <tr><td style="font-weight:500">Vita Coco</td><td><span class="badge b-corp">Title</span></td><td>Logo on mat, 2 IG posts, sampling</td><td style="font-weight:500">$1,500</td><td><span class="badge b-coach">Active</span></td></tr>
+        <tr><td style="font-weight:500">lululemon DC</td><td><span class="badge b-brand">Community</span></td><td>Banner, IG story mention</td><td style="font-weight:500">$1,000</td><td><span class="badge b-coach">Active</span></td></tr>
+        <tr><td style="font-weight:500">Whole Foods</td><td><span class="badge b-event">Snack</span></td><td>Post-class snacks, logo on flyer</td><td style="font-weight:500">$700</td><td><span class="badge b-coach">Active</span></td></tr>
+        <tr><td style="font-weight:500">Nike DC</td><td><span class="badge b-lead">In convo</span></td><td>TBD — title sponsorship discussion</td><td style="font-weight:500">$2,000+</td><td><span class="badge b-lead">Inquiry</span></td></tr>
       </tbody></table>
     </div>
-    <div class="insight insight-amber">
-      <strong>Pitch deck talking point:</strong> Average 160+ attendees per event · 126% capacity demand · 80K+ viral video views · DC Government grant recipient · Washington Post and Fox 5 DC coverage. Trap Yoga is the highest-profile recurring wellness event in DC. Sponsorship packages start at $700/event for the summer series.
-    </div>
-    <div class="card padded" style="margin-top:1rem">
-      <div style="font-size:13px;font-weight:500;margin-bottom:10px">Sponsorship packages</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-        <div style="padding:12px;background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--border)">
-          <div style="font-size:13px;font-weight:600;margin-bottom:4px">🥇 Title Sponsor</div>
-          <div style="font-size:20px;font-weight:500;color:var(--green-text);margin-bottom:6px">$1,500/event</div>
-          <div style="font-size:12px;color:var(--text2);display:grid;gap:3px">
-            <div>✓ Logo on yoga mat &amp; flyers</div><div>✓ 2 IG posts (co-branded)</div><div>✓ Product sampling table</div><div>✓ Stage mention by Britt</div><div>✓ Exclusive category rights</div>
-          </div>
-        </div>
-        <div style="padding:12px;background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--border)">
-          <div style="font-size:13px;font-weight:600;margin-bottom:4px">🥈 Community Sponsor</div>
-          <div style="font-size:20px;font-weight:500;color:var(--blue-text);margin-bottom:6px">$1,000/event</div>
-          <div style="font-size:12px;color:var(--text2);display:grid;gap:3px">
-            <div>✓ Banner at event</div><div>✓ 1 IG story mention</div><div>✓ Logo on event page</div><div>✓ Email list mention</div>
-          </div>
-        </div>
-        <div style="padding:12px;background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--border)">
-          <div style="font-size:13px;font-weight:600;margin-bottom:4px">🥉 Snack / Wellness Sponsor</div>
-          <div style="font-size:20px;font-weight:500;color:var(--amber-text);margin-bottom:6px">$700/event</div>
-          <div style="font-size:12px;color:var(--text2);display:grid;gap:3px">
-            <div>✓ Product distribution</div><div>✓ Logo on flyer</div><div>✓ Social tag</div>
-          </div>
-        </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+      <div style="padding:12px;background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--border)">
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px">🥇 Title — $1,500/event</div>
+        <div style="font-size:12px;color:var(--text2);display:grid;gap:3px"><div>✓ Logo on mat &amp; flyers</div><div>✓ 2 IG posts</div><div>✓ Product sampling</div><div>✓ Stage mention</div></div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--border)">
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px">🥈 Community — $1,000/event</div>
+        <div style="font-size:12px;color:var(--text2);display:grid;gap:3px"><div>✓ Banner at event</div><div>✓ 1 IG story</div><div>✓ Logo on event page</div></div>
+      </div>
+      <div style="padding:12px;background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--border)">
+        <div style="font-size:13px;font-weight:600;margin-bottom:4px">🥉 Snack — $700/event</div>
+        <div style="font-size:12px;color:var(--text2);display:grid;gap:3px"><div>✓ Product distribution</div><div>✓ Logo on flyer</div><div>✓ Social tag</div></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════ NOTES & PLANNING ═══════════════════════════════ -->
+<!-- NOTES & PLANNING -->
 <div id="panel-notes" class="panel">
   <div class="topbar">
     <div><div class="topbar-title">Notes &amp; Planning</div><div class="topbar-sub">Scratchpad · Data strategy · Expansion research</div></div>
-    <div style="display:flex;gap:8px">
-      <button class="btn primary hide-in-present" onclick="saveNote()"><i class="ti ti-device-floppy"></i> Save note</button>
-    </div>
+    <div style="display:flex;gap:8px"><button class="btn primary hide-in-present" onclick="saveNote()"><i class="ti ti-device-floppy"></i> Save note</button></div>
   </div>
   <div class="subtab-bar">
-    <button class="subtab active" onclick="switchSub('notes','scratchpad')">Scratchpad</button>
-    <button class="subtab" onclick="switchSub('notes','strategy')">Data Strategy</button>
-    <button class="subtab" onclick="switchSub('notes','expansion')">Expansion Planning</button>
+    <button class="subtab active" data-target="sub-notes-scratchpad" onclick="switchSub('notes','scratchpad')">Scratchpad</button>
+    <button class="subtab" data-target="sub-notes-strategy" onclick="switchSub('notes','strategy')">Data Strategy</button>
+    <button class="subtab" data-target="sub-notes-expansion" onclick="switchSub('notes','expansion')">Expansion Planning</button>
   </div>
-
-  <!-- SCRATCHPAD -->
   <div id="sub-notes-scratchpad" class="subpanel active">
     <div style="display:grid;grid-template-columns:1fr 280px;gap:16px">
       <div>
-        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">Drop anything here — meeting notes, ideas, research, things to follow up on. No structure required.</div>
-        <textarea id="scratchpad-text" style="width:100%;min-height:320px;padding:12px;border:0.5px solid var(--border2);border-radius:var(--radius-lg);background:var(--bg);color:var(--text);font-size:14px;font-family:inherit;outline:none;resize:vertical;line-height:1.7" placeholder="May 10 — Call with Kiera Davis went well. She wants Britt on a panel too, not just the keynote. Could be extra $2K.
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">Drop anything here — meeting notes, ideas, research. No structure required. Auto-saves.</div>
+        <textarea id="scratchpad-text" style="width:100%;min-height:340px;padding:14px;border:0.5px solid var(--border2);border-radius:var(--radius-lg);background:var(--bg);color:var(--text);font-size:14px;font-family:inherit;outline:none;resize:vertical;line-height:1.7" placeholder="May 10 — Call with Kiera Davis went well. She wants Britt on a panel too. Could be extra $2K.
 
-Trap Yoga NYC — Marcus Okonjo seems legit. Check his IG before committing. Need a venue contact in Brooklyn.
+Trap Yoga NYC — Marcus Okonjo seems legit. Check IG before committing. Need Brooklyn venue contact.
 
-lululemon Q3 brief — she mentioned a possible pop-up collab in addition to the 3 posts. Worth exploring.
-
-Amazon — Devon said 'before end of May' on budget. Put it in the task list if nothing by May 20."></textarea>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+lululemon Q3 brief — possible pop-up collab mentioned. Worth exploring."></textarea>
+        <div style="display:flex;justify-content:space-between;margin-top:8px">
           <span style="font-size:12px;color:var(--text3)" id="note-saved-status">Auto-saves as you type</span>
           <button class="btn sm hide-in-present" onclick="clearNote()">Clear</button>
         </div>
@@ -1112,73 +1268,56 @@ Amazon — Devon said 'before end of May' on budget. Put it in the task list if 
       <div>
         <div style="font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Saved notes</div>
         <div id="saved-notes-list" style="display:grid;gap:8px"></div>
-        <div style="margin-top:12px;padding:10px;background:var(--bg2);border-radius:var(--radius);font-size:12px;color:var(--text3)">
-          Notes are saved in your browser. Use the assistant tab to turn notes into tasks, emails, or action items.
-        </div>
+        <div style="margin-top:12px;padding:10px;background:var(--bg2);border-radius:var(--radius);font-size:12px;color:var(--text3)">Notes save in your browser. Use the AI Assistant to turn notes into tasks or emails.</div>
       </div>
     </div>
   </div>
-
   <div id="sub-notes-strategy" class="subpanel">
     <p style="font-size:13px;color:var(--text2);margin-bottom:1.25rem">A practical plan for building and maintaining the contact database from all available sources.</p>
-    <div class="strategy-card">
-      <div class="strategy-icon" style="background:var(--blue-fill);color:var(--blue-text)"><i class="ti ti-mail"></i></div>
-      <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-weight:500">Gmail — Google Contacts export</span><span class="badge b-corp">Best source</span><span class="badge b-coach">Do first</span></div>
-        <p style="font-size:13px;color:var(--text2);margin-bottom:10px">Everyone Britt has ever emailed is in Google Contacts. Fastest way to seed the database with real names and emails.</p>
-        <div class="strategy-steps">
-          <div class="strategy-step"><span class="step-num">1.</span><span>Go to <strong>contacts.google.com</strong> → Export → Google CSV</span></div>
-          <div class="strategy-step"><span class="step-num">2.</span><span>Open in Excel/Sheets, delete noise (newsletters, randoms)</span></div>
-          <div class="strategy-step"><span class="step-num">3.</span><span>Import cleaned file into this CRM using the CSV import button</span></div>
+    <div style="display:grid;gap:12px">
+      <div class="card padded" style="display:flex;gap:14px;align-items:flex-start">
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--blue-fill);color:var(--blue-text);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0"><i class="ti ti-mail"></i></div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-weight:500">Gmail — Google Contacts export</span><span class="badge b-corp">Do first</span></div>
+          <div style="font-size:13px;color:var(--text2);margin-bottom:10px">Everyone Britt has ever emailed is in Google Contacts. Fastest way to seed the database.</div>
+          <div style="display:grid;gap:5px;font-size:13px;color:var(--text2)">
+            <div>1. Go to contacts.google.com → Export → Google CSV</div>
+            <div>2. Open in Sheets, delete noise (newsletters, randoms)</div>
+            <div>3. Import cleaned file into CRM</div>
+          </div>
         </div>
-        <div class="strategy-note">~30 min one-time · Can repeat any time</div>
       </div>
-    </div>
-    <div class="strategy-card">
-      <div class="strategy-icon" style="background:var(--purple-fill);color:var(--purple-text)"><i class="ti ti-brand-instagram"></i></div>
-      <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-weight:500">Instagram — data export + manual enrichment</span><span class="badge b-lead">Partial</span></div>
-        <p style="font-size:13px;color:var(--text2);margin-bottom:10px">IG gives usernames only — no emails or real names. Useful for identifying engaged followers, but requires manual follow-up.</p>
-        <div class="strategy-steps">
-          <div class="strategy-step"><span class="step-num">1.</span><span>Settings → Your activity → Download your information (JSON)</span></div>
-          <div class="strategy-step"><span class="step-num">2.</span><span>Scan <strong>messages/inbox/</strong> for anyone who DM'd about training or events</span></div>
-          <div class="strategy-step"><span class="step-num">3.</span><span>Add as Leads — reply asking for their email to capture real contact info</span></div>
-        </div>
-        <div class="strategy-note">Export takes up to 48 hrs · Usernames only · No API access</div>
-      </div>
-    </div>
-    <div class="strategy-card" style="border-color:var(--border2)">
-      <div class="strategy-icon" style="background:var(--amber-fill);color:var(--amber-text)"><i class="ti ti-refresh"></i></div>
-      <div style="flex:1">
-        <div style="font-weight:500;margin-bottom:6px">The email-first habit — most important long-term</div>
-        <div class="strategy-steps">
-          <div class="strategy-step"><span class="step-num">→</span><span><strong>IG bio:</strong> "DM me your email for my free training guide" — converts followers to owned contacts</span></div>
-          <div class="strategy-step"><span class="step-num">→</span><span><strong>Trap Yoga:</strong> Collect emails at registration — this is a goldmine of superfans</span></div>
-          <div class="strategy-step"><span class="step-num">→</span><span><strong>Corporate:</strong> Always get the direct email of every stakeholder in a deal, not just the main contact</span></div>
-          <div class="strategy-step"><span class="step-num">→</span><span><strong>Every inquiry:</strong> Log immediately — Britt from phone, assistant from desktop</span></div>
+      <div class="card padded" style="display:flex;gap:14px;align-items:flex-start">
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--amber-fill);color:var(--amber-text);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0"><i class="ti ti-refresh"></i></div>
+        <div style="flex:1">
+          <div style="font-weight:500;margin-bottom:6px">The email-first habit — most important long-term</div>
+          <div style="display:grid;gap:5px;font-size:13px;color:var(--text2)">
+            <div>→ IG bio: "DM me your email for my free training guide" — converts followers to owned contacts</div>
+            <div>→ Trap Yoga: collect emails at registration — goldmine of superfans</div>
+            <div>→ Corporate: always get the direct email of every stakeholder, not just the main contact</div>
+            <div>→ Every inquiry: log immediately — Britt from phone, assistant from desktop</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
   <div id="sub-notes-expansion" class="subpanel">
-    <div style="font-size:13px;color:var(--text2);margin-bottom:1.25rem">Track new market opportunities — cities, venues, promoters — and model the financial case before committing.</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.25rem">
-      <div class="stat"><div class="stat-label">Markets being tracked</div><div class="stat-val">4</div></div>
+      <div class="stat"><div class="stat-label">Markets tracked</div><div class="stat-val">4</div></div>
       <div class="stat"><div class="stat-label">Inbound inquiries</div><div class="stat-val">2</div><div class="stat-sub">NYC + Atlanta</div></div>
-      <div class="stat"><div class="stat-label">Potential annual revenue</div><div class="stat-val">$96K</div><div class="stat-sub">if 4 markets × 6 events</div></div>
+      <div class="stat"><div class="stat-label">Potential annual revenue</div><div class="stat-val">$96K</div><div class="stat-sub">4 markets × 6 events</div></div>
     </div>
     <div class="tbl-wrap card" style="margin-bottom:1.25rem">
-      <table><thead><tr><th>Market</th><th>Status</th><th>Promoter contact</th><th>Est. capacity</th><th>Est. revenue/event</th><th>Logistics cost</th><th>Net/event</th></tr></thead>
+      <table><thead><tr><th>Market</th><th>Status</th><th>Contact</th><th>Est. capacity</th><th>Est. revenue</th><th>Logistics cost</th><th>Net/event</th></tr></thead>
       <tbody>
-        <tr><td style="font-weight:500">New York City</td><td><span class="badge b-brand">Inbound inquiry</span></td><td>Marcus Okonjo (BrooklynFit)</td><td>300</td><td style="font-weight:500">$9,000</td><td style="color:var(--coral-text)">−$2,200</td><td style="font-weight:500;color:var(--green-text)">$6,800</td></tr>
-        <tr><td style="font-weight:500">Atlanta</td><td><span class="badge b-brand">Inbound inquiry</span></td><td>TBD via Ebony Fit Weekend</td><td>250</td><td style="font-weight:500">$7,500</td><td style="color:var(--coral-text)">−$1,800</td><td style="font-weight:500;color:var(--green-text)">$5,700</td></tr>
-        <tr><td style="font-weight:500">Philadelphia</td><td><span class="badge b-lead">Researching</span></td><td>No contact yet</td><td>200</td><td style="font-weight:500">$6,000</td><td style="color:var(--coral-text)">−$800</td><td style="font-weight:500;color:var(--green-text)">$5,200</td></tr>
-        <tr><td style="font-weight:500">Baltimore</td><td><span class="badge b-lead">Researching</span></td><td>No contact yet</td><td>150</td><td style="font-weight:500">$4,500</td><td style="color:var(--coral-text)">−$400</td><td style="font-weight:500;color:var(--green-text)">$4,100</td></tr>
+        <tr><td style="font-weight:500">New York City</td><td><span class="badge b-brand">Inbound</span></td><td>Marcus Okonjo (BrooklynFit)</td><td>300</td><td>$9,000</td><td style="color:var(--coral-text)">−$2,200</td><td style="font-weight:500;color:var(--green-text)">$6,800</td></tr>
+        <tr><td style="font-weight:500">Atlanta</td><td><span class="badge b-brand">Inbound</span></td><td>TBD via Ebony Fit Weekend</td><td>250</td><td>$7,500</td><td style="color:var(--coral-text)">−$1,800</td><td style="font-weight:500;color:var(--green-text)">$5,700</td></tr>
+        <tr><td style="font-weight:500">Philadelphia</td><td><span class="badge b-lead">Researching</span></td><td>No contact yet</td><td>200</td><td>$6,000</td><td style="color:var(--coral-text)">−$800</td><td style="font-weight:500;color:var(--green-text)">$5,200</td></tr>
+        <tr><td style="font-weight:500">Baltimore</td><td><span class="badge b-lead">Researching</span></td><td>No contact yet</td><td>150</td><td>$4,500</td><td style="color:var(--coral-text)">−$400</td><td style="font-weight:500;color:var(--green-text)">$4,100</td></tr>
       </tbody></table>
     </div>
-    <div class="insight insight-blue">
-      <strong>📋 Expansion checklist — before committing to a new market</strong><br>
+    <div style="padding:1rem 1.25rem;background:var(--blue-fill);border-radius:var(--radius-lg);font-size:13px;color:var(--blue-text);line-height:1.7">
+      <strong>Expansion checklist — before committing to a new market:</strong><br>
       □ Confirmed local promoter who handles venue + ticket sales<br>
       □ Venue scouted with min. 200 capacity and sound system<br>
       □ Financial model shows net ≥ $4,000 after all costs<br>
@@ -1188,52 +1327,46 @@ Amazon — Devon said 'before end of May' on budget. Put it in the task list if 
   </div>
 </div>
 
-<!-- ═══════════════════════════════ AI ASSISTANT ═══════════════════════════════ -->
+<!-- AI ASSISTANT -->
 <div id="panel-ai" class="panel">
   <div class="topbar">
     <div><div class="topbar-title">AI Assistant</div><div class="topbar-sub">Claude — full context of Britt's business, contacts, and pipeline</div></div>
     <button class="btn hide-in-present" onclick="clearAIHistory()"><i class="ti ti-trash"></i> Clear history</button>
   </div>
-
-  <!-- Conversation history -->
   <div id="ai-history" style="display:grid;gap:10px;margin-bottom:1rem;max-height:420px;overflow-y:auto"></div>
-
-  <!-- Input -->
   <div class="ai-box">
-    <textarea id="ai-prompt" placeholder="Ask anything about Britt's business...&#10;'What are my biggest open deals?'&#10;'Draft a follow-up to the Microsoft contact'&#10;'Who should I reach out to this week?'" rows="3"></textarea>
+    <textarea id="ai-prompt" placeholder="Ask anything... 'What are my biggest open deals?' / 'Draft a follow-up to Microsoft' / 'Who should I reach out to this week?'" rows="3"></textarea>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
       <span style="font-size:12px;color:var(--text3)">Cmd+Enter to send</span>
       <button class="btn primary" id="ai-btn" onclick="askAI()"><i class="ti ti-sparkles"></i> Ask Claude</button>
     </div>
   </div>
-
-  <!-- Quick prompts grouped by category -->
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:1rem">
     <div>
       <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Pipeline</div>
       <div style="display:grid;gap:4px">
-        <button class="btn sm" style="justify-content:flex-start" onclick="setPrompt('What are my top 3 open pipeline deals and what should I do next with each?')">Top open deals ↗</button>
-        <button class="btn sm" style="justify-content:flex-start" onclick="setPrompt('Which deals have gone silent for more than 14 days?')">Gone silent ↗</button>
-        <button class="btn sm" style="justify-content:flex-start" onclick="setPrompt('Draft a follow-up email to Alicia Fontaine at Microsoft — proposal sent April 20, no reply yet.')">Microsoft follow-up ↗</button>
-        <button class="btn sm" style="justify-content:flex-start" onclick="setPrompt('How should I approach the Aetna discovery call on May 14? What do I know about them?')">Aetna prep ↗</button>
+        <button class="btn sm" style="justify-content:flex-start" onclick="setAndAsk('What are my top 3 open pipeline deals and what should I do next?')">Top open deals ↗</button>
+        <button class="btn sm" style="justify-content:flex-start" onclick="setAndAsk('Which deals have gone silent for more than 14 days?')">Gone silent ↗</button>
+        <button class="btn sm" style="justify-content:flex-start" onclick="setAndAsk('Draft a follow-up email to Alicia Fontaine at Microsoft — proposal sent April 20, no reply yet.')">Microsoft follow-up ↗</button>
+        <button class="btn sm" style="justify-content:flex-start" onclick="setAndAsk('How should I approach the Aetna discovery call on May 14?')">Aetna prep ↗</button>
       </div>
     </div>
     <div>
       <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Relationships</div>
       <div style="display:grid;gap:4px">
-        <button class="btn sm" style="justify-content:flex-start" onclick="setPrompt('Which contacts haven\'t been reached out to in over 30 days?')">Cold contacts ↗</button>
-        <button class="btn sm" style="justify-content:flex-start" onclick="setPrompt('Who in my network could I cross-refer to each other this week?')">Cross-referrals ↗</button>
-        <button class="btn sm" style="justify-content:flex-start" onclick="setPrompt('Summarize the Trap Yoga community — who are the superfans and best ambassador candidates?')">TY community ↗</button>
-        <button class="btn sm" style="justify-content:flex-start" onclick="setPrompt('Who are the most valuable contacts I haven\'t spoken to recently?')">Re-engage who? ↗</button>
+        <button class="btn sm" style="justify-content:flex-start" onclick="setAndAsk('Which contacts have not been reached out to in over 30 days?')">Cold contacts ↗</button>
+        <button class="btn sm" style="justify-content:flex-start" onclick="setAndAsk('Who in my network could I cross-refer to each other this week?')">Cross-referrals ↗</button>
+        <button class="btn sm" style="justify-content:flex-start" onclick="setAndAsk('Who are the top Trap Yoga superfans and best ambassador candidates?')">TY community ↗</button>
+        <button class="btn sm" style="justify-content:flex-start" onclick="setAndAsk('Who are the most valuable contacts I have not spoken to recently?')">Re-engage who? ↗</button>
       </div>
     </div>
     <div>
       <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Business intelligence</div>
       <div style="display:grid;gap:4px">
-        <button class="btn sm" style="justify-content:flex-start" onclick="setPrompt('What does my revenue look like this month vs last month? What stream is growing fastest?')">Revenue snapshot ↗</button>
-        <button class="btn sm" style="justify-content:flex-start" onclick="setPrompt('Which revenue stream gives Britt the best return on his time?')">Best ROI stream ↗</button>
-        <button class="btn sm" style="justify-content:flex-start" onclick="setPrompt('What should Britt prioritize this week to maximize revenue?')">This week\'s priority ↗</button>
-        <button class="btn sm" style="justify-content:flex-start" onclick="setPrompt('Draft a monthly update email from Britt to his key corporate clients.')">Monthly update ↗</button>
+        <button class="btn sm" style="justify-content:flex-start" onclick="setAndAsk('What does revenue look like this month and what stream is growing fastest?')">Revenue snapshot ↗</button>
+        <button class="btn sm" style="justify-content:flex-start" onclick="setAndAsk('Which revenue stream gives the best return on time?')">Best ROI stream ↗</button>
+        <button class="btn sm" style="justify-content:flex-start" onclick="setAndAsk('What should Britt prioritize this week to maximize revenue?')">This week priority ↗</button>
+        <button class="btn sm" style="justify-content:flex-start" onclick="setAndAsk('Draft a monthly update email from Britt to his key corporate clients.')">Monthly update ↗</button>
       </div>
     </div>
   </div>
@@ -1451,23 +1584,29 @@ const today = '2026-05-10';
 // ══════════════════════════════════════════════
 // NAVIGATION
 // ══════════════════════════════════════════════
+const ALL_PANELS = ['briefing','work','people','delivery','grants','community','revenue','brain','media','notes','ai'];
+
 function showPanel(id) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('panel-' + id).classList.add('active');
+  ALL_PANELS.forEach(p => {
+    const el = document.getElementById('panel-' + p);
+    if (el) el.classList.remove('active');
+  });
+  const panel = document.getElementById('panel-' + id);
+  if (!panel) return;
+  panel.classList.add('active');
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   const navBtn = document.getElementById('nav-' + id);
   if (navBtn) navBtn.classList.add('active');
-  // Reset subtabs to first active on each visit
-  const panel = document.getElementById('panel-' + id);
-  if (panel) {
-    const bar = panel.querySelector('.subtab-bar');
-    if (bar) {
-      const firstBtn = bar.querySelector('.subtab');
-      if (firstBtn) {
-        const onclickVal = firstBtn.getAttribute('onclick');
-        const match = onclickVal && onclickVal.match(/switchSub\('(\w+)','(\w+)'\)/);
-        if (match) switchSub(match[1], match[2]);
-      }
+  const bar = panel.querySelector('.subtab-bar');
+  if (bar) {
+    bar.querySelectorAll('.subtab').forEach(b => b.classList.remove('active'));
+    panel.querySelectorAll('[id^="sub-' + id + '-"]').forEach(sp => sp.classList.remove('active'));
+    const firstBtn = bar.querySelector('.subtab');
+    if (firstBtn) {
+      firstBtn.classList.add('active');
+      const targetId = firstBtn.getAttribute('data-target');
+      const target = document.getElementById(targetId) || panel.querySelector('[id^="sub-' + id + '-"]');
+      if (target) target.classList.add('active');
     }
   }
   if (id === 'revenue') renderRevChart();
@@ -1478,16 +1617,14 @@ function showPanel(id) {
 }
 
 function switchSub(panel, sub) {
-  const bar = document.querySelector(`#panel-${panel} .subtab-bar`);
+  const bar = document.querySelector('#panel-' + panel + ' .subtab-bar');
   if (!bar) return;
   bar.querySelectorAll('.subtab').forEach(b => b.classList.remove('active'));
-  const subpanels = document.querySelectorAll(`#panel-${panel} .subpanel`);
-  subpanels.forEach(p => p.classList.remove('active'));
-  const target = document.getElementById(`sub-${panel}-${sub}`);
+  document.querySelectorAll('[id^="sub-' + panel + '-"]').forEach(sp => sp.classList.remove('active'));
+  const target = document.getElementById('sub-' + panel + '-' + sub);
   if (target) target.classList.add('active');
-  // Activate the matching subtab button
   bar.querySelectorAll('.subtab').forEach(b => {
-    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes(`'${sub}'`)) b.classList.add('active');
+    if (b.getAttribute('data-target') === 'sub-' + panel + '-' + sub) b.classList.add('active');
   });
   if (panel === 'people' && sub === 'network') setTimeout(initGraph, 80);
   if (panel === 'work' && sub === 'pipeline') renderPipeline();
@@ -1495,8 +1632,14 @@ function switchSub(panel, sub) {
   if (panel === 'delivery' && sub === 'contracts') renderContracts();
   if (panel === 'delivery' && sub === 'classes') renderClasses();
   if (panel === 'community' && sub === 'events') renderEvents();
-  if (panel === 'community' && sub === 'attendees') renderAttendees();
+  if (panel === 'community' && sub === 'roster') renderRoster();
   if (panel === 'notes' && sub === 'scratchpad') initScratchpad();
+}
+
+function setAndAsk(prompt) {
+  document.getElementById('ai-prompt').value = prompt;
+  showPanel('ai');
+  askAI();
 }
 
 function toggleEl(id) {
@@ -1917,63 +2060,44 @@ function initGraph(){
 // AI ASSISTANT
 // ══════════════════════════════════════════════
 // ══════════════════════════════════════════════
-// ATTENDEE DATABASE
+// ATTENDEE ROSTER
 // ══════════════════════════════════════════════
-const attendees_db = [
-  {name:'Destiny Williams',email:'destiny.w@gmail.com',events:8,lastEvent:'May 2026',tag:'superfan',notes:'Always brings a crew. Ambassador candidate #1.'},
-  {name:'Jordan Hicks',email:'jordan.hicks@gmail.com',events:5,lastEvent:'May 2026',tag:'superfan',notes:'Personal trainer. Potential collab instructor.'},
-  {name:'Dani Reeves',email:'dani.reeves@gmail.com',events:4,lastEvent:'May 2026',tag:'superfan',notes:'Active on IG. Good content creator.'},
-  {name:'Marcus Rivera',email:'mrivera@gmail.com',events:3,lastEvent:'May 2026',tag:'private-client',notes:'Converted to private coaching client month 3.'},
-  {name:'Chris Obi',email:'chris.obi@gmail.com',events:3,lastEvent:'May 2026',tag:'ambassador-potential',notes:'Fitness influencer, 8K IG followers, tagged Britt twice.'},
-  {name:'Aaliyah Moore',email:'aaliyah.m@gmail.com',events:3,lastEvent:'May 2026',tag:'ambassador-potential',notes:'Brings 2 friends every event. Very engaged.'},
-  {name:'Kevin Park',email:'kevin.park@gmail.com',events:2,lastEvent:'May 2026',tag:'repeat',notes:''},
-  {name:'Tasha Lee',email:'tasha.lee@gmail.com',events:2,lastEvent:'Apr 2026',tag:'repeat',notes:'Works at Howard — possible corporate intro.'},
-  {name:'Noel Adeyemi',email:'noel.a@gmail.com',events:1,lastEvent:'Apr 2026',tag:'first-timer',notes:''},
-  {name:'Priya Sharma',email:'priya.sharma@gmail.com',events:1,lastEvent:'Apr 2026',tag:'first-timer',notes:''},
-  {name:'Marcus Thompson',email:'m.thompson@gmail.com',events:1,lastEvent:'May 2026',tag:'first-timer',notes:'Said it was "life-changing" — good quote.'},
-  {name:'Kezia Brown',email:'kezia.b@gmail.com',events:2,lastEvent:'May 2026',tag:'repeat',notes:''},
-  {name:'Daniel Park',email:'d.park@gmail.com',events:1,lastEvent:'Mar 2026',tag:'first-timer',notes:''},
-  {name:'Simone Wright',email:'s.wright@gmail.com',events:3,lastEvent:'May 2026',tag:'ambassador-potential',notes:'Community organizer. Huge network.'},
-  {name:'Anthony Davis',email:'',events:1,lastEvent:'May 2026',tag:'first-timer',notes:'No email captured yet.'},
-  {name:'Yara Hassan',email:'yara.h@gmail.com',events:2,lastEvent:'May 2026',tag:'repeat',notes:''},
-  {name:'Brandon Cole',email:'bcole@gmail.com',events:1,lastEvent:'Apr 2026',tag:'first-timer',notes:''},
-  {name:'Imani Clarke',email:'imani.c@gmail.com',events:4,lastEvent:'May 2026',tag:'superfan',notes:'Teaches yoga herself. Offered to volunteer.'},
+const rosterData = [
+  {name:'Destiny Williams',email:'destiny.w@gmail.com',events:8,lastSeen:'May 2026',tag:'superfan',notes:'Always brings friends. Gold ambassador.'},
+  {name:'Jordan Hicks',email:'jordan.hicks@gmail.com',events:5,lastSeen:'May 2026',tag:'repeat',notes:'Personal trainer. Silver ambassador.'},
+  {name:'Dani Reeves',email:'dani.reeves@gmail.com',events:4,lastSeen:'May 2026',tag:'ambassador',notes:'Bronze ambassador. Good content creator.'},
+  {name:'Marcus Rivera',email:'mrivera@gmail.com',events:4,lastSeen:'May 2026',tag:'private-client',notes:'Also a private coaching client.'},
+  {name:'Aaliyah Moore',email:'aaliyah.moore@gmail.com',events:3,lastSeen:'May 2026',tag:'superfan',notes:'Brought 2 friends last event. Ambassador candidate.'},
+  {name:'Chris Obi',email:'chris.obi@gmail.com',events:3,lastSeen:'May 2026',tag:'repeat',notes:'Fitness influencer, 8K IG followers.'},
+  {name:'Kevin Park',email:'kevin.park@gmail.com',events:3,lastSeen:'May 2026',tag:'repeat',notes:'Regular. Always rates 5 stars.'},
+  {name:'Tasha Lee',email:'tasha.lee@gmail.com',events:2,lastSeen:'May 2026',tag:'repeat',notes:'Referred by Destiny.'},
+  {name:'Noel Adeyemi',email:'noel.a@gmail.com',events:1,lastSeen:'Apr 2026',tag:'first-timer',notes:'From Sycamore & Oak event.'},
+  {name:'Priya Sharma',email:'priya.s@gmail.com',events:1,lastSeen:'Apr 2026',tag:'first-timer',notes:'Works at Georgetown hospital.'},
+  {name:'Aaliyah Foster',email:'a.foster@gmail.com',events:2,lastSeen:'Apr 2026',tag:'repeat',notes:'Repeat from TGS series.'},
+  {name:'Devon Hill',email:'devon.h@gmail.com',events:1,lastSeen:'May 2026',tag:'first-timer',notes:'Found via Instagram.'},
+  {name:'Simone Carter',email:'simone.c@gmail.com',events:2,lastSeen:'May 2026',tag:'repeat',notes:'Brought her sister last time.'},
+  {name:'Marcus Thompson',email:'m.thompson@gmail.com',events:1,lastSeen:'Mar 2026',tag:'first-timer',notes:'WeFit collab attendee.'},
+  {name:'Zara Jenkins',email:'z.jenkins@gmail.com',events:3,lastSeen:'May 2026',tag:'repeat',notes:'Event photographer. Huge community value.'},
 ];
 
-function renderAttendees(){
-  const q=(document.getElementById('search-attendees')?.value||'').toLowerCase();
-  const ft=document.getElementById('filter-atag')?.value||'';
-  let rows=[...attendees_db];
-  if(ft)rows=rows.filter(a=>a.tag===ft);
-  if(q)rows=rows.filter(a=>[a.name,a.email,a.tag,a.notes].join(' ').toLowerCase().includes(q));
-  const tb=document.getElementById('tbl-attendees');
-  if(!tb)return;
-  const tagBadge=(t)=>{
-    const m={superfan:'b-brand',repeat:'b-corp','first-timer':'b-lead','ambassador-potential':'b-speak','private-client':'b-coach'};
-    const l={superfan:'Superfan',repeat:'Repeat','-timer':'First-timer','ambassador-potential':'Ambassador candidate','private-client':'Private client'};
-    const label={'superfan':'Superfan','repeat':'Repeat','first-timer':'First-timer','ambassador-potential':'Ambassador cand.','private-client':'Private client'}[t]||t;
-    return `<span class="badge ${m[t]||'b-lead'}">${label}</span>`;
-  };
-  if(!rows.length){tb.innerHTML=`<tr><td colspan="6"><div class="empty">No attendees match.</div></td></tr>`;return}
-  tb.innerHTML=rows.map(a=>`<tr>
-    <td><div class="name-cell"><div class="avatar ${a.tag==='superfan'?'av-amber':a.tag==='private-client'?'av-blue':a.tag==='ambassador-potential'?'av-purple':'av-gray'}">${ini(a.name)}</div><span>${a.name}</span></div></td>
-    <td style="color:var(--text2)">${a.email||'<span style="color:var(--coral-text)">No email</span>'}</td>
-    <td style="font-weight:500">${a.events} event${a.events>1?'s':''}</td>
-    <td style="color:var(--text2)">${a.lastEvent}</td>
-    <td>${tagBadge(a.tag)}</td>
-    <td style="font-size:12px;color:var(--text2)">${a.notes||'—'}</td>
+function renderRoster() {
+  const q = (document.getElementById('search-roster')?.value||'').toLowerCase();
+  const ft = document.getElementById('filter-roster-tag')?.value||'';
+  let rows = rosterData;
+  if (ft) rows = rows.filter(r => r.tag === ft);
+  if (q) rows = rows.filter(r => [r.name,r.email,r.notes].join(' ').toLowerCase().includes(q));
+  const tagStyle = {superfan:'b-corp',repeat:'b-coach','first-timer':'b-lead',ambassador:'b-brand','private-client':'b-speak'};
+  const tb = document.getElementById('tbl-roster');
+  if (!tb) return;
+  tb.innerHTML = rows.map(r => `<tr>
+    <td><div class="name-cell"><div class="avatar ${tagStyle[r.tag]||'av-gray'}">${ini(r.name)}</div><span>${r.name}</span></div></td>
+    <td style="color:var(--text2);font-size:12px">${r.email}</td>
+    <td><span style="font-weight:600">${r.events}</span> <span style="color:var(--text3);font-size:12px">event${r.events!==1?'s':''}</span></td>
+    <td style="color:var(--text2);font-size:12px">${r.lastSeen}</td>
+    <td><span class="badge ${tagStyle[r.tag]||'b-lead'}">${r.tag}</span></td>
+    <td style="font-size:12px;color:var(--text2)">${r.notes}</td>
   </tr>`).join('');
 }
-
-function exportAttendees(){
-  const hdr=['Name','Email','Events attended','Last event','Tag','Notes'];
-  const rows=attendees_db.map(a=>[a.name,a.email,a.events,a.lastEvent,a.tag,a.notes].map(v=>`"${(v||'').toString().replace(/"/g,'""')}"`));
-  const csv=[hdr,...rows].map(r=>r.join(',')).join('\n');
-  const el=document.createElement('a');el.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);el.download='bdd_attendees.csv';el.click();
-}
-
-// ══════════════════════════════════════════════
-// SCRATCHPAD
 // ══════════════════════════════════════════════
 const savedNotes = [];
 let noteTimer = null;
@@ -2145,7 +2269,6 @@ updateStats();
 renderContacts();
 renderOrgs();
 renderEvents();
-renderAttendees();
 renderTasks();
 renderPipeline();
 renderRevChart();
