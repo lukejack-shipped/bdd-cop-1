@@ -35,8 +35,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 /* LAYOUT */
 .app-shell{display:flex;min-height:100vh}
-.sidebar{width:var(--sidebar);background:var(--bg2);border-right:0.5px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:50;flex-shrink:0}
-.main{margin-left:var(--sidebar);flex:1;min-width:0;padding:1.5rem 1.75rem 4rem}
+.sidebar{width:var(--sidebar);background:var(--bg2);border-right:0.5px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:50;flex-shrink:0;transition:transform .22s ease}
+.main{margin-left:var(--sidebar);flex:1;min-width:0;padding:1.5rem 1.75rem 4rem;transition:margin-left .22s ease}
+/* Collapsed: sidebar slides fully off screen */
+body.sidebar-collapsed .sidebar{transform:translateX(-100%)}
+body.sidebar-collapsed .main{margin-left:0}
+/* Expand tab — only visible when collapsed */
+.sidebar-expand-tab{display:none;position:fixed;top:50%;left:0;transform:translateY(-50%);z-index:60;background:var(--bg2);border:0.5px solid var(--border);border-left:none;border-radius:0 6px 6px 0;padding:10px 6px;cursor:pointer;color:var(--text2);transition:color .12s,background .12s}
+.sidebar-expand-tab:hover{background:var(--bg3);color:var(--text)}
+body.sidebar-collapsed .sidebar-expand-tab{display:flex;align-items:center;justify-content:center}
 
 /* SIDEBAR */
 .sidebar-brand{padding:1rem 1rem 0.75rem;border-bottom:0.5px solid var(--border)}
@@ -312,8 +319,17 @@ body.present-mode .sidebar-footer .present-toggle{background:var(--text);color:v
       <i class="ti ti-presentation"></i>
       <span id="present-label">Present mode</span>
     </button>
+    <button class="present-toggle" onclick="toggleSidebar()" style="margin-top:6px;border-color:transparent;background:transparent">
+      <i class="ti ti-layout-sidebar-left-collapse"></i>
+      <span>Collapse sidebar</span>
+    </button>
   </div>
 </aside>
+
+<!-- Expand tab — shown only when sidebar is collapsed -->
+<button class="sidebar-expand-tab" onclick="toggleSidebar()" title="Expand sidebar">
+  <i class="ti ti-chevron-right" style="font-size:16px"></i>
+</button>
 
 <!-- MAIN CONTENT -->
 <main class="main">
@@ -430,10 +446,10 @@ body.present-mode .sidebar-footer .present-toggle{background:var(--text);color:v
     </div>
   </div>
   <div class="subtab-bar">
-    <button class="subtab active" data-target="sub-work-pipeline" onclick="switchSub('work','pipeline')">Pipeline</button>
-    <button class="subtab" data-target="sub-work-tasks" onclick="switchSub('work','tasks')">Tasks</button>
-    <button class="subtab" data-target="sub-work-renewal" onclick="switchSub('work','renewal')">Renewal Radar</button>
-    <button class="subtab" data-target="sub-work-proposals" onclick="switchSub('work','proposals')">Proposals</button>
+    <button class="subtab active" onclick="switchSub('work','pipeline')">Pipeline</button>
+    <button class="subtab" onclick="switchSub('work','tasks')">Tasks</button>
+    <button class="subtab" onclick="switchSub('work','renewal')">Renewal Radar</button>
+    <button class="subtab" onclick="switchSub('work','proposals')">Proposals</button>
   </div>
 
   <!-- Pipeline subpanel -->
@@ -544,9 +560,9 @@ body.present-mode .sidebar-footer .present-toggle{background:var(--text);color:v
     </div>
   </div>
   <div class="subtab-bar">
-    <button class="subtab active" data-target="sub-people-contacts" onclick="switchSub('people','contacts')">Contacts</button>
-    <button class="subtab" data-target="sub-people-orgs" onclick="switchSub('people','orgs')">Organizations</button>
-    <button class="subtab" data-target="sub-people-network" onclick="switchSub('people','network');setTimeout(initGraph,80)">Network</button>
+    <button class="subtab active" onclick="switchSub('people','contacts')">Contacts</button>
+    <button class="subtab" onclick="switchSub('people','orgs')">Organizations</button>
+    <button class="subtab" onclick="switchSub('people','network');setTimeout(initGraph,80)">Network</button>
   </div>
 
   <!-- Contacts -->
@@ -615,8 +631,8 @@ body.present-mode .sidebar-footer .present-toggle{background:var(--text);color:v
     </div>
   </div>
   <div class="subtab-bar">
-    <button class="subtab active" data-target="sub-delivery-contracts" onclick="switchSub('delivery','contracts')">Active Contracts</button>
-    <button class="subtab" data-target="sub-delivery-classes" onclick="switchSub('delivery','classes')">Classes &amp; Sessions</button>
+    <button class="subtab active" onclick="switchSub('delivery','contracts')">Active Contracts</button>
+    <button class="subtab" onclick="switchSub('delivery','classes')">Classes &amp; Sessions</button>
   </div>
 
   <!-- Contracts -->
@@ -735,11 +751,11 @@ body.present-mode .sidebar-footer .present-toggle{background:var(--text);color:v
     </div>
   </div>
   <div class="subtab-bar">
-    <button class="subtab active" data-target="sub-community-events" onclick="switchSub('community','events')">Trap Yoga Events</button>
-    <button class="subtab" data-target="sub-community-roster" onclick="switchSub('community','roster')">Attendee Roster</button>
-    <button class="subtab" data-target="sub-community-ambassadors" onclick="switchSub('community','ambassadors')">Ambassadors</button>
-    <button class="subtab" data-target="sub-community-waitlist" onclick="switchSub('community','waitlist')">Waitlist &amp; Demand</button>
-    <button class="subtab" data-target="sub-community-campaigns" onclick="switchSub('community','campaigns')">Email Campaigns</button>
+    <button class="subtab active" onclick="switchSub('community','events')">Trap Yoga Events</button>
+    <button class="subtab" onclick="switchSub('community','roster')">Attendee Roster</button>
+    <button class="subtab" onclick="switchSub('community','ambassadors')">Ambassadors</button>
+    <button class="subtab" onclick="switchSub('community','waitlist')">Waitlist &amp; Demand</button>
+    <button class="subtab" onclick="switchSub('community','campaigns')">Email Campaigns</button>
   </div>
 
   <div id="sub-community-events" class="subpanel active">
@@ -1586,6 +1602,14 @@ const today = '2026-05-10';
 // ══════════════════════════════════════════════
 const ALL_PANELS = ['briefing','work','people','delivery','grants','community','revenue','brain','media','notes','ai'];
 
+function getSubFromOnclick(btn) {
+  // Extract the second argument from switchSub('panel','sub') regardless of quote escaping
+  const oc = btn.getAttribute('onclick') || '';
+  const clean = oc.replace(/\\'/g, "'").replace(/\\"/g, '"');
+  const m = clean.match(/switchSub\(\s*['"](\w+)['"]\s*,\s*['"](\w+)['"]\s*\)/);
+  return m ? { panel: m[1], sub: m[2] } : null;
+}
+
 function showPanel(id) {
   ALL_PANELS.forEach(p => {
     const el = document.getElementById('panel-' + p);
@@ -1594,9 +1618,11 @@ function showPanel(id) {
   const panel = document.getElementById('panel-' + id);
   if (!panel) return;
   panel.classList.add('active');
+
   document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
   const navBtn = document.getElementById('nav-' + id);
   if (navBtn) navBtn.classList.add('active');
+
   const bar = panel.querySelector('.subtab-bar');
   if (bar) {
     bar.querySelectorAll('.subtab').forEach(b => b.classList.remove('active'));
@@ -1604,11 +1630,18 @@ function showPanel(id) {
     const firstBtn = bar.querySelector('.subtab');
     if (firstBtn) {
       firstBtn.classList.add('active');
-      const targetId = firstBtn.getAttribute('data-target');
-      const target = document.getElementById(targetId) || panel.querySelector('[id^="sub-' + id + '-"]');
-      if (target) target.classList.add('active');
+      const parsed = getSubFromOnclick(firstBtn);
+      if (parsed) {
+        const target = document.getElementById('sub-' + parsed.panel + '-' + parsed.sub);
+        if (target) target.classList.add('active');
+      } else {
+        // Last resort: just show first subpanel with this panel's prefix
+        const fallback = panel.querySelector('[id^="sub-' + id + '-"]');
+        if (fallback) fallback.classList.add('active');
+      }
     }
   }
+
   if (id === 'revenue') renderRevChart();
   if (id === 'work') { renderPipeline(); renderTasks(); }
   if (id === 'delivery') { renderContracts(); renderClasses(); }
@@ -1624,7 +1657,8 @@ function switchSub(panel, sub) {
   const target = document.getElementById('sub-' + panel + '-' + sub);
   if (target) target.classList.add('active');
   bar.querySelectorAll('.subtab').forEach(b => {
-    if (b.getAttribute('data-target') === 'sub-' + panel + '-' + sub) b.classList.add('active');
+    const parsed = getSubFromOnclick(b);
+    if (parsed && parsed.sub === sub) b.classList.add('active');
   });
   if (panel === 'people' && sub === 'network') setTimeout(initGraph, 80);
   if (panel === 'work' && sub === 'pipeline') renderPipeline();
@@ -1636,12 +1670,6 @@ function switchSub(panel, sub) {
   if (panel === 'notes' && sub === 'scratchpad') initScratchpad();
 }
 
-function setAndAsk(prompt) {
-  document.getElementById('ai-prompt').value = prompt;
-  showPanel('ai');
-  askAI();
-}
-
 function toggleEl(id) {
   const el = document.getElementById(id);
   el.style.display = el.style.display === 'none' ? 'block' : 'none';
@@ -1650,6 +1678,17 @@ function toggleEl(id) {
 // ══════════════════════════════════════════════
 // PRESENT MODE
 // ══════════════════════════════════════════════
+function toggleSidebar() {
+  const collapsed = document.body.classList.toggle('sidebar-collapsed');
+  localStorage.setItem('bdd_sidebar', collapsed ? '0' : '1');
+}
+
+function initSidebar() {
+  if (localStorage.getItem('bdd_sidebar') === '0') {
+    document.body.classList.add('sidebar-collapsed');
+  }
+}
+
 function togglePresent() {
   document.body.classList.toggle('present-mode');
   const active = document.body.classList.contains('present-mode');
@@ -2275,6 +2314,7 @@ renderRevChart();
 renderContracts();
 renderClasses();
 initScratchpad();
+initSidebar();
 </script>
 </body>
 </html>
